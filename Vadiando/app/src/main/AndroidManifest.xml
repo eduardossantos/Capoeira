@@ -15,7 +15,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".FormularioActivity"></activity>
+        <activity android:name=".FormularioActivity" />
+        <activity android:name=".NovoAquiActivity" />
+        <activity android:name=".RodasActivity" />
+        <activity android:name=".NovaRodaActivity"></activity>
     </application>
 
 </manifest>

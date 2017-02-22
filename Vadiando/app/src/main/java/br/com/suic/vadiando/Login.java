@@ -26,5 +26,14 @@ public class Login extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        Button novoAqui = (Button)(findViewById(R.id.NovoAqui));
+        novoAqui.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(contexto,NovoAquiActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }

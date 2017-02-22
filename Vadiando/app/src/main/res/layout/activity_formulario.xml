@@ -31,6 +31,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
+        <Button
+            android:layout_marginTop="87dp"
+            android:id="@+id/formularioEnviar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Enviar"
+            />
+
     </LinearLayout>
 
 </RelativeLayout>

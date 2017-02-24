@@ -18,7 +18,9 @@
         <activity android:name=".FormularioActivity" />
         <activity android:name=".NovoAquiActivity" />
         <activity android:name=".RodasActivity" />
-        <activity android:name=".NovaRodaActivity"></activity>
+        <activity android:name=".NovaRodaActivity" />
+        <activity android:name=".EventoCriadoActivity" />
+        <activity android:name=".ListaDeRodasActivity"></activity>
     </application>
 
 </manifest>

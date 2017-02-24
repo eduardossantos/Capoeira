@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_nova_roda"
+    android:id="@+id/activity_evento_criado"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="br.com.suic.vadiando.NovaRodaActivity">
+
+    tools:context="br.com.suic.vadiando.EventoCriadoActivity">
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -31,57 +33,78 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="95dp">
+        android:layout_marginBottom="196dp">
 
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <EditText
+            <TextView
+                android:layout_marginBottom="16dp"
+                android:textSize="18dp"
                 android:id="@+id/novaRodaLocal"
                 android:hint="Local"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="30dp"/>
 
 
-            <EditText
+            <TextView
+                android:layout_marginBottom="16dp"
+                android:textSize="18dp"
                 android:id="@+id/novaRodaResponsavel"
                 android:hint="Responsavel"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="30dp"/>
 
-            <EditText
+            <TextView
+                android:layout_marginBottom="16dp"
+                android:textSize="18dp"
                 android:inputType="time"
                 android:id="@+id/novaRodaDataInicio"
                 android:hint="Data do Evento"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="30dp"/>
 
-            <EditText
+            <TextView
+                android:textSize="18dp"
                 android:id="@+id/novaRodaHora"
                 android:hint="Hora de Início"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="30dp"/>
 
-            <EditText
-                android:id="@+id/repitaSenha"
-                android:hint="Observações"
+
+
+            <LinearLayout
+                android:layout_marginTop="16dp"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"/>
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
+                <TextView
+                    android:textSize="18dp"
+                    android:layout_marginRight="46dp"
+                    android:text="Detalhes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:textSize="18dp"
+                    android:layout_marginRight="46dp"
+                    android:text="Confirmados"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:textSize="18dp"
+                    android:text="ok"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
 
-
+            </LinearLayout>
 
         </LinearLayout>
 
 
 
     </LinearLayout>
-    <Button
-        android:id="@+id/novaRodaEnviar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Criar Evento"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="16dp"/>
+
 </RelativeLayout>

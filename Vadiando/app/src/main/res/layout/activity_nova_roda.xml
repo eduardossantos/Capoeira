@@ -15,7 +15,7 @@
         android:layout_alignParentStart="true"
         android:layout_marginBottom="376dp">
 
-        <ImageView
+        <EditText
             android:id="@+id/nova_roda_foto"
             android:layout_width="150dp"
             android:layout_height="150dp"

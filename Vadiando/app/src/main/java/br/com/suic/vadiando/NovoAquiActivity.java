@@ -112,6 +112,7 @@ public class NovoAquiActivity extends AppCompatActivity {
                 Usuario usuario = helper.getUsuario();
                 UsuarioDAO dao = new UsuarioDAO(this);
                 dao.inserir(usuario);
+                dao.close();
                 Toast.makeText(NovoAquiActivity.this,"Usuário "+usuario.getApelido()+" Salvo",Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(contexto,RodasActivity.class);
                 startActivity(intent);

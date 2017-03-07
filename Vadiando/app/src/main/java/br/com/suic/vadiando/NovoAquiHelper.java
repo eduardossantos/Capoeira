@@ -16,13 +16,7 @@ public class NovoAquiHelper {
     private final EditText campoSenha;
     private final EditText campoUf;
     private final EditText campoNascimento;
-    private int id;
-    private String apelido;
-    private String email;
-    private String senha;
-    private String uf;
-    private String sexo;
-    private String nascimento;
+
 
     public NovoAquiHelper(NovoAquiActivity activity){
         campoApelido = (EditText) activity.findViewById(R.id.novo_aqui_apelido);

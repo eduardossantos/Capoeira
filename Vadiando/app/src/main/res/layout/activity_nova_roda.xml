@@ -16,10 +16,12 @@
         android:layout_marginBottom="376dp">
 
         <ImageView
+            android:id="@+id/nova_roda_foto"
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:layout_marginLeft="16dp"/>
         <EditText
+            android:id="@+id/nova_roda_descricao"
             android:layout_marginLeft="49dp"
             android:layout_marginRight="16dp"
             android:layout_width="150dp"
@@ -39,7 +41,7 @@
             android:layout_height="wrap_content">
 
             <EditText
-                android:id="@+id/novaRodaLocal"
+                android:id="@+id/nova_roda_local"
                 android:hint="Local"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
@@ -49,28 +51,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
             <EditText
-                android:id="@+id/novaRodaResponsavel"
+                android:id="@+id/nova_roda_responsavel"
                 android:hint="Responsavel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
             <EditText
                 android:inputType="time"
-                android:id="@+id/novaRodaDataInicio"
+                android:id="@+id/nova_roda_data_Hora_inicio"
                 android:hint="Data do Evento"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
             <EditText
-                android:id="@+id/novaRodaHora"
-                android:hint="Hora de Início"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-            <EditText
-                android:id="@+id/repitaSenha"
+                android:id="@+id/nova_roda_observacoes"
                 android:hint="Observações"
                 android:layout_width="match_parent"
                 android:layout_height="145dp"/>
-
-
 
         </LinearLayout>
 

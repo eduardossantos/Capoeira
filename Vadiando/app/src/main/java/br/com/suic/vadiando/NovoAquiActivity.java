@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.ThemedSpinnerAdapter;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Menu;
@@ -12,17 +13,22 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.util.Calendar;
 
+import br.com.suic.vadiando.models.Usuario;
+
 public class NovoAquiActivity extends AppCompatActivity {
     final Context contexto = this;
+    NovoAquiHelper helper;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_novo_aqui);
+        helper = new NovoAquiHelper(this);
 
-        final EditText dataInicio = (EditText)findViewById(R.id.novaRodaDataInicio);
+        final EditText dataInicio = (EditText)findViewById(R.id.novo_aqui_data_nascimento);
 
         TextWatcher tw = new TextWatcher() {
             private String current = "";
@@ -102,6 +108,9 @@ public class NovoAquiActivity extends AppCompatActivity {
 
         switch (item.getItemId()){
             case R.id.menu_novo_aqui_ok:
+                Usuario usuario = helper.getUsuario();
+                
+                Toast.makeText(NovoAquiActivity.this,"Usuário "+usuario.getApelido()+" Salvo",Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(contexto,RodasActivity.class);
                 startActivity(intent);
                 break;

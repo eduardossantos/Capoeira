@@ -8,7 +8,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import static br.com.suic.vadiando.R.id.senha;
 
 public class FormularioActivity extends AppCompatActivity {
     final Context contexto = this;

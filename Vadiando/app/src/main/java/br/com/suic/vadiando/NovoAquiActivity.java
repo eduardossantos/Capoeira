@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import java.util.Calendar;
 
+import br.com.suic.vadiando.dao.UsuarioDAO;
 import br.com.suic.vadiando.models.Usuario;
 
 public class NovoAquiActivity extends AppCompatActivity {
@@ -109,7 +110,8 @@ public class NovoAquiActivity extends AppCompatActivity {
         switch (item.getItemId()){
             case R.id.menu_novo_aqui_ok:
                 Usuario usuario = helper.getUsuario();
-                
+                UsuarioDAO dao = new UsuarioDAO(this);
+                dao.inserir(usuario);
                 Toast.makeText(NovoAquiActivity.this,"Usuário "+usuario.getApelido()+" Salvo",Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(contexto,RodasActivity.class);
                 startActivity(intent);

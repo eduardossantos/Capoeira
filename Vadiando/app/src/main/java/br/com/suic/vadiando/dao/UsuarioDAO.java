@@ -4,6 +4,8 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import br.com.suic.vadiando.models.Usuario;
+
 /**
  * Created by Icons4u TI on 07/03/2017.
  */
@@ -31,5 +33,9 @@ public class UsuarioDAO extends SQLiteOpenHelper{
                      "DROP TABLE IF EXISTS Confirmados;";
         onCreate(db);
 
+    }
+
+    public void inserir(Usuario usuario) {
+        
     }
 }

@@ -37,8 +37,8 @@ public class FormularioActivity extends AppCompatActivity {
 
 
                 Intent intent = new Intent(contexto,RodasActivity.class);
-                intent.putExtra(helper.pegaNome(),true);
-                intent.putExtra(helper.pegaSenha(),true);
+                intent.putExtra(helper.getEmail(),true);
+                intent.putExtra(helper.getSenha(),true);
                 startActivity(intent);
                 finish();
                 break;

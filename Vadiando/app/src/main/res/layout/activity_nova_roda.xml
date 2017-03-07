@@ -31,7 +31,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="80dp">
+        >
 
         <LinearLayout
             android:orientation="vertical"
@@ -43,32 +43,32 @@
                 android:hint="Local"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
-
-
+            <EditText
+                android:id="@+id/nova_roda_uf"
+                android:hint="UF"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
             <EditText
                 android:id="@+id/novaRodaResponsavel"
                 android:hint="Responsavel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
-
             <EditText
                 android:inputType="time"
                 android:id="@+id/novaRodaDataInicio"
                 android:hint="Data do Evento"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
-
             <EditText
                 android:id="@+id/novaRodaHora"
                 android:hint="Hora de Início"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
-
             <EditText
                 android:id="@+id/repitaSenha"
                 android:hint="Observações"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"/>
+                android:layout_height="145dp"/>
 
 
 

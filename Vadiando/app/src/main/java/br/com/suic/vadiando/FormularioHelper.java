@@ -16,13 +16,13 @@ public class FormularioHelper {
          userSenha = (EditText) activity.findViewById(R.id.senhaLogin);
     }
 
-    public String pegaNome() {
+    public String getEmail() {
        String email =  userMail.getText().toString();
         return  email;
 
     }
 
-    public String pegaSenha() {
+    public String getSenha() {
         String senha= userSenha.getText().toString();
         return senha;
     }

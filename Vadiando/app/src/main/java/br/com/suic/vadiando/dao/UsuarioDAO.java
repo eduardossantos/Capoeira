@@ -14,7 +14,7 @@ import br.com.suic.vadiando.models.Usuario;
 
 public class UsuarioDAO extends SQLiteOpenHelper{
     public UsuarioDAO(Context context) {
-        super(context, "Vadiando", null, 2);
+        super(context, "Vadiando", null, 1);
     }
 
     @Override

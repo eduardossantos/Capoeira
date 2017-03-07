@@ -15,14 +15,20 @@ import android.widget.EditText;
 
 import java.util.Calendar;
 
+import br.com.suic.vadiando.dao.UsuarioDAO;
+import br.com.suic.vadiando.models.Roda;
+
 public class NovaRodaActivity extends AppCompatActivity {
     final Context contexto = this;
+    NovaRodaHelper helper;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nova_roda);
+        helper = new NovaRodaHelper(this);
 
-        final EditText dataInicio = (EditText)findViewById(R.id.novaRodaDataInicio);
+
+        final EditText dataInicio = (EditText)findViewById(R.id.nova_roda_data_Hora_inicio);
 
         TextWatcher tw = new TextWatcher() {
             private String current = "";
@@ -100,6 +106,10 @@ public class NovaRodaActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.menu_nova_roda_ok:
+                Roda roda = helper.getRoda();
+                UsuarioDAO dao = new UsuarioDAO(this);
+                dao.inserirRoda(roda);
+                dao.close();
                 Intent intent = new Intent(contexto,EventoCriadoActivity.class);
                 startActivity(intent);
                 break;

@@ -31,7 +31,7 @@ public class NovaRodaHelper {
     public Roda getRoda(){
 
         Roda roda = new Roda();
-        roda.setUrlFoto(campoFoto.getText().toString());
+        roda.setfoto(campoFoto.getText().toString());
         roda.setDescricao(campoDescricao.getText().toString());
         roda.setResponsavel(campoResponsavel.getText().toString());
         roda.setLocal(campoLocal.getText().toString());

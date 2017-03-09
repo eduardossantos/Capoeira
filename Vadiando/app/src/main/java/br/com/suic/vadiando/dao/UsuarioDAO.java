@@ -2,8 +2,12 @@ package br.com.suic.vadiando.dao;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import br.com.suic.vadiando.models.Roda;
 import br.com.suic.vadiando.models.Usuario;
@@ -20,10 +24,7 @@ public class UsuarioDAO extends SQLiteOpenHelper{
     @Override
     public void onCreate(SQLiteDatabase db) {
         String sql = "CREATE TABLE Usuario(id INTEGER PRIMARY KEY, email TEXT,apelido TEXT, senha TEXT, uf TEXT, sexo INTEGER, nascimento TEXT);" +
-                "CREATE TABLE Roda(id INTEGER PRIMARY KEY, local TEXT, responsavel TEXT, dataHora TEXT,observacoes TEXT,uf TEXT, foto TEXT,descricao TEXT,observacoes TEXT);" +
-                "CREATE TABLE Confirmados(idUsuario INTEGER ,idRoda INTEGER," +
-                "FOREIGN KEY(idUsuario) REFERENCES Usuario(id)," +
-                "FOREIGN KEY(idRoda) REFERENCES Roda(id));";
+                "CREATE TABLE Roda(id INTEGER PRIMARY KEY, local TEXT, responsavel TEXT, dataHora TEXT,uf TEXT, foto TEXT,descricao TEXT,observacoes TEXT);";
         db.execSQL(sql);
 
     }
@@ -56,10 +57,27 @@ public class UsuarioDAO extends SQLiteOpenHelper{
         dados.put("responsavel",roda.getResponsavel());
         dados.put("dataHora",roda.getDataHora());
         dados.put("uf",roda.getUf());
-        dados.put("foto",roda.getUrlFoto());
+        dados.put("foto",roda.getfoto());
         dados.put("descricao",roda.getDescricao());
         dados.put("observacoes",roda.getObservacoes());
         db.insert("Roda",null,dados);
+
+    }
+
+    public List<Roda> buscaRodas() {
+        String sql = "SELECT * FROM Roda;";
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor c = db.rawQuery(sql,null);
+        ArrayList<Roda> rodas = new ArrayList<Roda>();
+        while (c.moveToNext()){
+            Roda roda = new Roda();
+            roda.setResponsavel(c.getString(c.getColumnIndex("responsavel")));
+            rodas.add(roda);
+        }
+        c.close();
+
+
+        return rodas;
 
     }
 }

@@ -17,7 +17,7 @@
         >
         
         <Button
-            android:id="@+id/rodasRodas"
+            android:id="@+id/rodas_busca_rodas"
             android:text="Rodas"
             android:layout_width="200dp"
             android:layout_height="200dp"
@@ -27,7 +27,7 @@
 
     </LinearLayout>
     <Button
-        android:id="@+id/rodasNovaRoda"
+        android:id="@+id/rodas_nova_roda"
         android:text="+"
         android:textSize="30sp"
         android:layout_width="56dp"

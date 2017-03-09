@@ -6,7 +6,7 @@ package br.com.suic.vadiando.models;
 
 public class Roda {
     private int id;
-    private String urlFoto;
+    private String foto;
     private String descricao;
     private String local;
     private String uf;
@@ -22,12 +22,12 @@ public class Roda {
         this.id = id;
     }
 
-    public String getUrlFoto() {
-        return urlFoto;
+    public String getfoto() {
+        return foto;
     }
 
-    public void setUrlFoto(String urlFoto) {
-        this.urlFoto = urlFoto;
+    public void setfoto(String foto) {
+        this.foto = foto;
     }
 
     public String getDescricao() {

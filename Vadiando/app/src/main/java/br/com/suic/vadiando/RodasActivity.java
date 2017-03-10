@@ -31,6 +31,7 @@ public class RodasActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(contexto,ListaDeRodasActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
     }

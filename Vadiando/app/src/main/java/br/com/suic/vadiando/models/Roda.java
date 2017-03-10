@@ -5,7 +5,7 @@ package br.com.suic.vadiando.models;
  */
 
 public class Roda {
-    private int id;
+    private Long id;
     private String foto;
     private String descricao;
     private String local;
@@ -14,11 +14,11 @@ public class Roda {
     private String dataHora;
     private String observacoes;
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -76,5 +76,10 @@ public class Roda {
 
     public void setObservacoes(String observacoes) {
         this.observacoes = observacoes;
+    }
+
+    @Override
+    public String toString() {
+        return getResponsavel() + " - "+ getLocal();
     }
 }

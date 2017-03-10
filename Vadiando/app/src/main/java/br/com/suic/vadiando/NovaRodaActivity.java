@@ -112,6 +112,7 @@ public class NovaRodaActivity extends AppCompatActivity {
                 dao.close();
                 Intent intent = new Intent(contexto,EventoCriadoActivity.class);
                 startActivity(intent);
+                finish();
                 break;
 
         }

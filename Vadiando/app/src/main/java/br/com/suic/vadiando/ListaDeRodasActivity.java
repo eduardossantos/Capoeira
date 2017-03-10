@@ -17,8 +17,10 @@ public class ListaDeRodasActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lista_de_rodas);
+
         UsuarioDAO dao = new UsuarioDAO(this);
-        ArrayList<Roda> rodas = (ArrayList<Roda>) dao.buscaRodas();
+        List<Roda> rodas =  dao.buscaRodas();
+        dao.close();
 
         ListView listaDeRodas = (ListView)findViewById(R.id.lista_de_rodas_lista);
         ArrayAdapter<Roda> adapter = new ArrayAdapter<Roda>(this,android.R.layout.simple_list_item_1,rodas);

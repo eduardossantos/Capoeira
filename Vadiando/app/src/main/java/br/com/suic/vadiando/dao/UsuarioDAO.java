@@ -23,8 +23,7 @@ public class UsuarioDAO extends SQLiteOpenHelper{
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String sql = "CREATE TABLE Usuario(id INTEGER PRIMARY KEY, email TEXT,apelido TEXT, senha TEXT, uf TEXT, sexo INTEGER, nascimento TEXT);" +
-                "CREATE TABLE Roda(id INTEGER PRIMARY KEY, local TEXT, responsavel TEXT, dataHora TEXT,uf TEXT, foto TEXT,descricao TEXT,observacoes TEXT);";
+        String sql = "CREATE TABLE Roda(id INTEGER PRIMARY KEY , local TEXT, responsavel TEXT, dataHora TEXT,uf TEXT, foto TEXT,descricao TEXT,observacoes TEXT);";
         db.execSQL(sql);
 
     }
@@ -67,11 +66,18 @@ public class UsuarioDAO extends SQLiteOpenHelper{
     public List<Roda> buscaRodas() {
         String sql = "SELECT * FROM Roda;";
         SQLiteDatabase db = getReadableDatabase();
-        Cursor c = db.rawQuery(sql,null);
+         Cursor c = db.rawQuery(sql,null);
         ArrayList<Roda> rodas = new ArrayList<Roda>();
         while (c.moveToNext()){
             Roda roda = new Roda();
+            roda.setId(c.getLong(c.getColumnIndex("id")));
+            roda.setfoto(c.getString(c.getColumnIndex("foto")));
+            roda.setDescricao(c.getString(c.getColumnIndex("descricao")));
+            roda.setLocal(c.getString(c.getColumnIndex("local")));
+            roda.setUf(c.getString(c.getColumnIndex("uf")));
             roda.setResponsavel(c.getString(c.getColumnIndex("responsavel")));
+            roda.setDataHora(c.getString(c.getColumnIndex("dataHora")));
+            roda.setObservacoes(c.getString(c.getColumnIndex("observacoes")));
             rodas.add(roda);
         }
         c.close();

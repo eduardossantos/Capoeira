@@ -1,24 +1,31 @@
-module.exports = function(app){
-
-	var conectaDB = require('conectaDB');
-
-	var usuarioModel = {
-		listarUsuarios : function(query){
-			return new Promise = function(retorno, erro){
-				conectaDB().then(function(conexao){
-
-					conexao.connect();
-
-					conexao.query('SELECT * FROM TB_USUARIOS');
-
-				});
-			};
-		},
-		listarUsuario : function(req, res){
-			//req.session.destroy();
-			res.redirect('/');
-		}
-	}
-
-	return usuarioModel;
+function usuariosModel(conexao) {
+	this.conexao = conexao;
 }
+
+usuariosModel.prototype.find = function(query){
+
+	//conecta com o banco de dados
+	this.conexao.query(query, function(error, results, fields){
+		if(error){
+			return error;
+		}
+
+		
+	});
+
+};
+
+usuariosModel.prototype.create = function(query){
+
+};
+
+usuariosModel.prototype.update = function(_id, data){
+
+};
+usuariosModel.prototype.remove = function(_id){
+
+};
+
+module.exports = new usuariosModel(conexao){
+	return new usuariosModel(conexao);
+};

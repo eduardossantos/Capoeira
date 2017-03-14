@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_formulario"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="br.com.suic.vadiando.FormularioActivity">
+
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:layout_centerInParent="true"
+        android:orientation="vertical">
+
+        <EditText
+            android:layout_marginTop="80dp"
+            android:textAlignment="center"
+            android:id="@+id/emailLogin"
+            android:hint="Digite seu email aqui"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
+            android:layout_marginBottom="56dp"/>
+
+        <EditText
+            android:textAlignment="center"
+            android:inputType="textPassword"
+            android:id="@+id/senhaLogin"
+            android:hint="Senha"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+
+    </LinearLayout>
+
+</RelativeLayout>

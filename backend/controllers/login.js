@@ -5,23 +5,20 @@ module.exports = function(app){
 	var loginController = {
 		entrar : function(req,res){
 
-			var email = req.query.email,
-				senha = req.query.senha;
+			console.log(req);
+
+			var email = req.body.email,
+				senha = req.body.senha;
 
 			DB.conectaDB().then(function(connection){
 
 				var params = {};
-				params.columnsToChange = {senha : '102030', apelido : 'Eduardo Santos'};
-				params.columnsToSearch = {email :'luizsantos1992@gmail.com'};
+				params.columnsToSelect = ['apelido','email'];
+				params.columnsToSearch = {email : email, senha : senha};
 
-				usuarios.insert(connection, params.columnsToChange).then(function(data){
+				usuarios.findOne(connection, params).then(function(data){
 					
-					if(email && senha){
-						//Se os 2 foram informados, verificar no banco se pertence a algum usuário
-						res.json({'email' : email, 'senha' : senha, 'retornoBD' : data});
-					} else {
-						res.json({'email' : email, 'senha' : senha});
-					};	
+					res.json({ retorno : data});	
 
 				}, function(error){
 					res.json(error.stack);
@@ -32,6 +29,7 @@ module.exports = function(app){
 			});
 
 		},
+
 		sair : function(req, res){
 			//req.session.destroy();
 			res.redirect('/');

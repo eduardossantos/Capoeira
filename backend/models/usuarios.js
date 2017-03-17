@@ -17,7 +17,7 @@ exports.findOne = function(connection, params){
 	return new Promise(function(data, error){
 		connection.query('SELECT ?? FROM Usuarios WHERE email = ?', [params.columns, params.emailUser] ,function(err, results, fields){
 			if(err){
-				console.log({"erro" : err});
+				error({"erro" : err});
 				return;
 			}
 
@@ -30,6 +30,20 @@ exports.insert = function(connection, post){
 	//var post = {id : 1, title : 'Hello World'}
 	return new Promise(function(data, error){
 		connection.query('INSERT INTO Usuarios WHERE SET = ?', post ,function(err, results, fields){
+			if(err){
+				error({"erro" : err});
+				return;
+			}
+
+			data(results);
+		});
+	});
+}
+
+exports.update = function(connection, post){
+	//var post = {id : 1, title : 'Hello World'}
+	return new Promise(function(data, error){
+		connection.query('UPDATE Usuarios SET ? WHERE ?', [post.columnsToChange, post.columnsToSearch] ,function(err, results, fields){
 			if(err){
 				error({"erro" : err});
 				return;

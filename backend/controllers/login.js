@@ -11,10 +11,10 @@ module.exports = function(app){
 			DB.conectaDB().then(function(connection){
 
 				var params = {};
-				params.columns = ['email','senha'];
-				params.emailUser = 'luizsantos1992@gmail.com';
+				params.columnsToChange = {senha : '102030', apelido : 'Eduardo Santos'};
+				params.columnsToSearch = {email :'luizsantos1992@gmail.com'};
 
-				usuarios.findOne(connection, params).then(function(data){
+				usuarios.update(connection, params).then(function(data){
 					
 					if(email && senha){
 						//Se os 2 foram informados, verificar no banco se pertence a algum usuário
@@ -23,8 +23,12 @@ module.exports = function(app){
 						res.json({'email' : email, 'senha' : senha});
 					};	
 
+				}, function(error){
+					res.json(error.stack);
 				});
 
+			}, function(error){
+				res.json(error);
 			});
 
 		},

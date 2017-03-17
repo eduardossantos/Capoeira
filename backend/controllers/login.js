@@ -14,7 +14,7 @@ module.exports = function(app){
 				params.columnsToChange = {senha : '102030', apelido : 'Eduardo Santos'};
 				params.columnsToSearch = {email :'luizsantos1992@gmail.com'};
 
-				usuarios.update(connection, params).then(function(data){
+				usuarios.insert(connection, params.columnsToChange).then(function(data){
 					
 					if(email && senha){
 						//Se os 2 foram informados, verificar no banco se pertence a algum usuário

@@ -27,9 +27,9 @@ exports.findOne = function(connection, params){
 }
 
 exports.insert = function(connection, post){
-	//var post = {id : 1, title : 'Hello World'}
+	var post2 = {senha : '123456', apelido : 'Hello World'}
 	return new Promise(function(data, error){
-		connection.query('INSERT INTO Usuarios WHERE SET = ?', post ,function(err, results, fields){
+		var query = connection.query('INSERT INTO Usuarios SET ?', post2 ,function(err, results, fields){
 			if(err){
 				error({"erro" : err});
 				return;
@@ -37,6 +37,8 @@ exports.insert = function(connection, post){
 
 			data(results);
 		});
+
+		console.log(query.sql)
 	});
 }
 

@@ -1,7 +1,11 @@
 module.exports = function(app){
-	var login = app.controllers.login;
+	var login = app.controllers.login,
+		usuario = app.controllers.usuario;
 
-	app.get('/usuario/entrar', login.entrar);
-	app.get('/usuario/sair', login.sair);
+	app.get('/login', login.entrar);	
+
+	app.post('/usuario/novo', usuario.novo);
+	app.post('/usuario/buscar', usuario.buscar);
+	app.post('/usuario/editar', usuario.editar);
 	
 };

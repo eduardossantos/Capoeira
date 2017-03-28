@@ -1,17 +1,35 @@
 module.exports = function(app){
+	var DB = app.models.conectaDB;
+	var usuarios = app.models.usuarios;
+
 	var loginController = {
 		entrar : function(req,res){
-			var email = req.body.usuario.email,
-				senha = req.body.usuario.senha;
 
-			if(email && senha){
-				//Se os 2 foram informados, verificar no banco se pertence a algum usuário
-				res.json({'email' : email, 'senha' : senha});
-			} else {
-				//Aqui entra a mensagem de erro no login;
-			}	
+			console.log(req);
+
+			var email = req.body.email,
+				senha = req.body.senha;
+
+			DB.conectaDB().then(function(connection){
+
+				var params = {};
+				params.columnsToSelect = ['apelido','email'];
+				params.columnsToSearch = {email : email, senha : senha};
+
+				usuarios.findOne(connection, params).then(function(data){
+					
+					res.json({ retorno : data});	
+
+				}, function(error){
+					res.json(error.stack);
+				});
+
+			}, function(error){
+				res.json(error);
+			});
 
 		},
+
 		sair : function(req, res){
 			//req.session.destroy();
 			res.redirect('/');

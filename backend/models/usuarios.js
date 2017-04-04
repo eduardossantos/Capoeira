@@ -14,6 +14,14 @@ exports.findAll = function(connection, params){
 }
 
 exports.findOne = function(connection, params){
+
+	console.log((params.columnsToSearch).length);
+
+	for each (var parametro in params.columnsToSearch) {
+	  console.log(parametro);
+	};
+
+
 	return new Promise(function(data, error){
 		var query = connection.query('SELECT ?? FROM Usuarios WHERE ?', [params.columnsToSelect, params.columnsToSearch] ,function(err, results, fields){
 			if(err){

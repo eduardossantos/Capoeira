@@ -5,7 +5,7 @@ module.exports = function(app){
 	var loginController = {
 		entrar : function(req,res){
 
-			console.log(req);
+			// console.log(req);
 
 			var email = req.body.email,
 				senha = req.body.senha;
@@ -14,7 +14,7 @@ module.exports = function(app){
 
 				var params = {};
 				params.columnsToSelect = ['apelido','email'];
-				params.columnsToSearch = {email : email, senha : senha};
+				params.columnsToSearch = [{email : email}, {senha : senha}];
 
 				usuarios.findOne(connection, params).then(function(data){
 					

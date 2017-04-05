@@ -1,8 +1,13 @@
 var Promise = require('bluebird');
 
-exports.findAll = function(connection, params){
+exports.findAll = function(connection, params, where = null, order = null, limit = null, offset = null){
+
+	if(where) {
+		where = "WHERE " + where;
+	};
+
 	return new Promise(function(data, error){
-		connection.query('SELECT ?? FROM Usuarios', [params.columns], function(err, results, fields){
+		connection.query('SELECT ?? FROM Usuarios' + where, [params.columns], function(err, results, fields){
 			if(err){
 				error({"erro" : err});
 				return;
@@ -13,23 +18,22 @@ exports.findAll = function(connection, params){
 	});
 }
 
-exports.findOne = function(connection, params){
+exports.findOne = function(connection, columns, where = ''){
 
-	console.log((params.columnsToSearch).length);
-
-	for each (var parametro in params.columnsToSearch) {
-	  console.log(parametro);
+	if(where) {
+		where = "WHERE " + where;
 	};
 
-
 	return new Promise(function(data, error){
-		var query = connection.query('SELECT ?? FROM Usuarios WHERE ?', [params.columnsToSelect, params.columnsToSearch] ,function(err, results, fields){
+		var query = connection.query('SELECT ?? FROM Usuarios ' + where, columns ,function(err, results, fields){
 			if(err){
 				error({"erro" : err});
 				return;
 			}
 
 			data(results);
+
+			console.log(results);
 		});
 
 		console.log(query.sql);

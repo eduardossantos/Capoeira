@@ -8,20 +8,19 @@ module.exports = function(app){
 			// console.log(req);
 
 			var email = req.body.email,
-				senha = req.body.senha;
+				senha = req.body.senha; 
 
 			DB.conectaDB().then(function(connection){
 
-				var params = {};
-				params.columnsToSelect = ['apelido','email'];
-				params.columnsToSearch = [{email : email}, {senha : senha}];
+				var columnsToSelect = ['id'];
+				var where = "email = '" + email + "' AND senha = '" + senha + "'";
 
-				usuarios.findOne(connection, params).then(function(data){
+				usuarios.findOne(connection, columnsToSelect, where).then(function(data){
 					
 					res.json({ retorno : data});	
 
 				}, function(error){
-					res.json(error.stack);
+					res.json(error);
 				});
 
 			}, function(error){

@@ -40,7 +40,7 @@ module.exports = function(app){
 					res.json({ retorno : data});	
 
 				}, function(error){
-					res.json(error.stack);
+					res.json(error);
 				});
 
 			}, function(error){

@@ -25,7 +25,7 @@ exports.findOne = function(connection, columns, where = ''){
 	};
 
 	return new Promise(function(data, error){
-		var query = connection.query('SELECT ?? FROM Usuarios ' + where, columns);
+		var query = connection.query('SELECT ?? FROM Usuarios' + where, columns);
 
 		query
 			.on('error', function(err) {
@@ -34,9 +34,6 @@ exports.findOne = function(connection, columns, where = ''){
 					return;
 				}
 		    })
-			.on('fields', function(fields, index){
-				console.log(fields);
-			})
 			.on('result', function(row, index){
 				data(row);
 			});

@@ -25,18 +25,21 @@ exports.findOne = function(connection, columns, where = ''){
 	};
 
 	return new Promise(function(data, error){
-		var query = connection.query('SELECT ?? FROM Usuarios ' + where, columns ,function(err, results, fields){
-			if(err){
-				error({"erro" : err});
-				return;
-			}
+		var query = connection.query('SELECT ?? FROM Usuarios ' + where, columns);
 
-			data(results);
-
-			console.log(results);
-		});
-
-		console.log(query.sql);
+		query
+			.on('error', function(err) {
+			   	if(err){
+					error({"erro" : err});
+					return;
+				}
+		    })
+			.on('fields', function(fields, index){
+				console.log(fields);
+			})
+			.on('result', function(row, index){
+				data(row);
+			});
 	});
 }
 

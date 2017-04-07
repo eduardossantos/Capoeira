@@ -1,6 +1,6 @@
 var Promise = require('bluebird');
 
-exports.findAll = function(connection, params, where = null, order = null, limit = null, offset = null){
+exports.findAll = function(connection, params, where){
 
 	if(where) {
 		where = "WHERE " + where;
@@ -18,7 +18,7 @@ exports.findAll = function(connection, params, where = null, order = null, limit
 	});
 }
 
-exports.findOne = function(connection, columns, where = ''){
+exports.findOne = function(connection, columns, where){
 
 	if(where) {
 		where = "WHERE " + where;
@@ -56,10 +56,14 @@ exports.insert = function(connection, post){
 	});
 }
 
-exports.update = function(connection, post){
+exports.update = function(connection, post, where){
+
+	if(where){
+		where = ' WHERE = ' + where ;
+	}
 	//var post = {id : 1, title : 'Hello World'}
 	return new Promise(function(data, error){
-		connection.query('UPDATE Usuarios SET ? WHERE ?', [post.columnsToChange, post.columnsToSearch] ,function(err, results, fields){
+		connection.query('UPDATE Usuarios SET ?' + where, [post.columnsToChange] ,function(err, results, fields){
 			if(err){
 				error({"erro" : err});
 				return;

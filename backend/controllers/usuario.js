@@ -12,9 +12,9 @@ module.exports = function(app){
 				params.columnsToSelect = ['id','foto', 'descricao', 'apelido', 'nascimento', 'uf', 'email', 'senha','sexo'];
 				params.columnsToSearch = req.body;
 
-				console.log(params);
+				var where = "id = '" + req.body.id + "'";
 
-				usuarios.findOne(connection, params).then(function(data){
+				usuarios.findOne(connection, params, where).then(function(data){
 					res.json({ retorno : data});	
 
 				}, function(error){
@@ -33,9 +33,9 @@ module.exports = function(app){
 
 				var params = req.body;
 
-				params.columnsToSelect = ['id','foto', 'descricao', 'local', 'uf', 'responsavel', 'dataHora', 'observacoes'];
+				params.columnsToSelect = ['id','foto', 'descricao', 'apelido', 'nascimento', 'uf', 'email', 'senha','sexo'];
 
-				rodas.insert(connection, params).then(function(data){
+				usuarios.insert(connection, params).then(function(data){
 					
 					res.json({ retorno : data});	
 
@@ -56,7 +56,7 @@ module.exports = function(app){
 
 				var params = req.body;
 
-				rodas.update(connection, params).then(function(data){
+				usuarios.update(connection, params).then(function(data){
 					
 					res.json({ retorno : data});	
 

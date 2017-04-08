@@ -33,11 +33,20 @@ module.exports = function(app){
 
 				var params = req.body;
 
-				params.columnsToSelect = ['id','foto', 'descricao', 'apelido', 'nascimento', 'uf', 'email', 'senha','sexo'];
+				if (!params.apelido && !params.nascimento && !params.uf && !params.email && !params.senha){
+
+					res.json({ erro : true, mensagem : 'Erro ao analisar parametros', codErro : 1});
+
+				};
+
+				//Se não enviar informações sobre a foto joga valor NULL
+				if (!params.foto){
+					params.foto = 'NULL';
+				};
 
 				usuarios.insert(connection, params).then(function(data){
 					
-					res.json({ retorno : data});	
+					res.json({retorno : { idUsuario : data.insertId}});	
 
 				}, function(error){
 					res.json(error);

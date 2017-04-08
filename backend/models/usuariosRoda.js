@@ -4,15 +4,10 @@ exports.findAll = function(connection, params, where){
 	
 	if(where){
 		where = 'WHERE ' + where;
-	} else {
-		where = ''
-	}	;
+	};
 
 	return new Promise(function(data, error){
-
-		var sql = 'SELECT '+ params.columns +' FROM Rodas R INNER JOIN Usuarios_Rodas UR ON UR.idRoda = R.id INNER JOIN Usuarios U on UR.idUsuario = U.id'
-
-		var query = connection.query(sql + where, function(err, results, fields){
+		connection.query('SELECT ?? FROM Rodas ' + where, [params.columns], function(err, results, fields){
 			if(err){
 				error({"erro" : err});
 				return;
@@ -20,7 +15,6 @@ exports.findAll = function(connection, params, where){
 
 			data(results);
 		});
-		console.log(query.sql);
 	});
 }
 
@@ -55,7 +49,7 @@ exports.findOne = function(connection, params, where){
 exports.insert = function(connection, post){
 	console.log(post);
 	return new Promise(function(data, error){
-		var query = connection.query('INSERT INTO Rodas SET ?', post ,function(err, result){
+		var query = connection.query('INSERT INTO Usuarios_Rodas SET ?', post ,function(err, result){
 			if(err){
 				error({"erro" : err});
 				return;

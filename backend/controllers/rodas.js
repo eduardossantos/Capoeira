@@ -1,6 +1,6 @@
 module.exports = function(app){
 	var DB = app.models.conectaDB;
-	var rodas = app.models.rodas;
+	var rodas = app.models.rodas; usuariosRoda = app.models.usuariosRoda;
 
 	var rodasController = {
 		buscar : function(req,res){
@@ -9,9 +9,9 @@ module.exports = function(app){
 
 				var params = {};
 
-				params.columnsToSelect = ['id','foto', 'descricao', 'local', 'uf', 'responsavel', 'dataHora', 'observacoes'];
+				params.columns = 'R.id, R.foto, U.id, U.apelido';
 
-				rodas.findALL(connection, params).then(function(data){
+				rodas.findAll(connection, params).then(function(data){
 					
 					res.json({ retorno : data});	
 
@@ -55,12 +55,27 @@ module.exports = function(app){
 			DB.conectaDB().then(function(connection){
 
 				var params = req.body;
+				var idUsuario = req.body.idUsuario;
 
-				params.columnsToSelect = ['id','foto', 'descricao', 'local', 'uf', 'responsavel', 'dataHora', 'observacoes'];
+				delete params.idUsuario;
+
+				if(!params.foto && !params.local && !params.uf && !params.idUsuario && !params.dataHora && !params.descricao )
+				{
+					res.json({ erro : true, mensagem : 'Erro ao analisar parametros', codErro : 2});
+				};
 
 				rodas.insert(connection, params).then(function(data){
 					
-					res.json({ retorno : data});	
+					if(data.insertId){
+						var parametros = {
+							idUsuario : idUsuario,
+							idRoda : data.insertId
+						};
+
+						usuariosRoda.insert(connection, parametros).then(function(data){
+							res.json({retorno : { idUsuario : idUsuario}});
+						});
+					};
 
 				}, function(error){
 					res.json(error);

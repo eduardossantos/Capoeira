@@ -42,14 +42,15 @@ exports.findOne = function(connection, columns, where){
 
 exports.insert = function(connection, post){
 	//var post = {apelido : 'Luiz santos', senha : '1234567'}
+	console.log(post);
 	return new Promise(function(data, error){
-		var query = connection.query('INSERT INTO Usuarios SET ?', post ,function(err, results, fields){
+		var query = connection.query('INSERT INTO Usuarios SET ?', post ,function(err, result){
 			if(err){
 				error({"erro" : err});
 				return;
 			}
 
-			data(results);
+			data(result);
 		});
 
 		console.log(query.sql)

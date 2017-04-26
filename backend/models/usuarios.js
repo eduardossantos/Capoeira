@@ -42,7 +42,7 @@ exports.findOne = function(connection, columns, where){
 
 exports.insert = function(connection, post){
 	//var post = {apelido : 'Luiz santos', senha : '1234567'}
-	console.log(post);
+	//console.log(post);
 	return new Promise(function(data, error){
 		var query = connection.query('INSERT INTO Usuarios SET ?', post ,function(err, result){
 			if(err){

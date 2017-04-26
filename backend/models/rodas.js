@@ -6,21 +6,21 @@ exports.findAll = function(connection, params, where){
 		where = 'WHERE ' + where;
 	} else {
 		where = ''
-	}	;
+	};
+
+	var colunasToSelected = params.columns;
 
 	return new Promise(function(data, error){
-
-		var sql = 'SELECT '+ params.columns +' FROM Rodas R INNER JOIN Usuarios_Rodas UR ON UR.idRoda = R.id INNER JOIN Usuarios U on UR.idUsuario = U.id'
-
-		var query = connection.query(sql + where, function(err, results, fields){
-			if(err){
-				error({"erro" : err});
-				return;
-			}
-
-			data(results);
-		});
-		console.log(query.sql);
+	var sql = 'SELECT '+ colunasToSelected +' FROM ?? R INNER JOIN ?? UR ON UR.idRoda = R.id INNER JOIN ?? U on UR.idUsuario = U.id';
+	var tabelas = ['Rodas','Usuarios_Rodas','Usuarios']
+	var query = connection.query(sql + where, tabelas, function(err, results, fields){
+		if(err){
+			error({"erro" : err});
+			return;
+		}
+		data(results);
+	});
+	//console.log(query.sql);
 	});
 }
 

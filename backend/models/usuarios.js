@@ -3,7 +3,7 @@ var Promise = require('bluebird');
 exports.findAll = function(connection, params, where){
 
 	if(where) {
-		where = "WHERE " + where;
+		where = " WHERE " + where;
 	};
 
 	return new Promise(function(data, error){
@@ -21,22 +21,18 @@ exports.findAll = function(connection, params, where){
 exports.findOne = function(connection, columns, where){
 
 	if(where) {
-		where = "WHERE " + where;
+		where = " WHERE " + where;
 	};
 
 	return new Promise(function(data, error){
-		var query = connection.query('SELECT ?? FROM Usuarios' + where, columns);
+		connection.query('SELECT ?? FROM Usuarios' + where, [columns], function(err, results, fields){
+			if(err){
+				error({"erro" : err});
+				return;
+			}
 
-		query
-			.on('error', function(err) {
-			   	if(err){
-					error({"erro" : err});
-					return;
-				}
-		    })
-			.on('result', function(row, index){
-				data(row);
-			});
+			data(results[0]);
+		});
 	});
 }
 

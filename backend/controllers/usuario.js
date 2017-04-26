@@ -7,14 +7,13 @@ module.exports = function(app){
 
 			DB.conectaDB().then(function(connection){
 
-				var params = {};
+				var colums = [];
 
-				params.columnsToSelect = ['id','foto', 'descricao', 'apelido', 'nascimento', 'uf', 'email', 'senha','sexo'];
-				params.columnsToSearch = req.body;
+				var columns = ['id','foto', 'descricao', 'apelido', 'nascimento', 'uf', 'email','sexo'];
 
-				var where = "id = '" + req.body.id + "'";
+				var where = "id = " & req.body.id;
 
-				usuarios.findOne(connection, params, where).then(function(data){
+				usuarios.findOne(connection, columns, where).then(function(data){
 					res.json({ retorno : data});	
 
 				}, function(error){

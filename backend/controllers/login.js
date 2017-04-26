@@ -7,8 +7,8 @@ module.exports = function(app){
 
 			// console.log(req);
 
-			var email = req.body.email,
-				senha = req.body.senha; 
+			var email = req.query.email,
+				senha = req.query.senha; 
 
 			DB.conectaDB().then(function(connection){
 

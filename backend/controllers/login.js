@@ -6,8 +6,7 @@ module.exports = function(app){
 	var loginController = {
 		entrar : function(req,res){
 
-			var where = "email = '" + req.query.email + "' AND senha = '" + req.query.senha +"'";
-			console.log(where);
+			var where = "email = '" + req.params.email + "' AND senha = '" + req.params.senha +"'";
 
 			usuarios.find(where).then(function(retorno){
 				res.json(retorno);

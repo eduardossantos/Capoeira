@@ -1,13 +1,18 @@
 module.exports = function(app){
-	var DB = app.models.conectaDB;
-	//var usuarios = app.models.usuarios;
+	var Promise = require('bluebird'),
+		usuarios = app.models.Dao.usuarios;
+	
 
 	var loginController = {
 		entrar : function(req,res){
 
-			// console.log(req);
+			var where = "email = '" + req.query.email + "' AND senha = '" + req.query.senha +"'";
+			console.log(where);
 
-			res.end();
+			usuarios.find(where).then(function(retorno){
+				res.json(retorno);
+			});
+
 		},
 
 		sair : function(req, res){

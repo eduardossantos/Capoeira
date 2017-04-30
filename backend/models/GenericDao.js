@@ -19,14 +19,25 @@ module.exports = function(app)
 		},
 		execQuery : function(query){
 			return new promise(function(callback, error){
-					connection.query(query, function(err, rows){
-						if(err){
-							error(err.stack);
-							return;
-						}
-						callback(rows);
-					});
+				connection.query(query, function(err, rows){
+					if(err){
+						error(err.stack);
+						return;
+					}
+					callback(rows);
+				});
 			});
+		},
+		insertQuery : function(query, params){
+			return new promise(function(callback, error){
+				connection.query(query, params, function(err, rows){
+					if(err){
+						error(err.stack);
+						return;
+					}
+					callback(rows);
+				})
+			})
 		},
 		endConnection : function(){
 			connection.end();

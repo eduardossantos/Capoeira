@@ -26,7 +26,32 @@ module.exports = function(app)
 				callback(data[0]);
 			});
 
+			genericDao
+			.endConnection();
+
 			});
+		},
+		createUser : function(params){
+
+			return new promise(function(callback, error){
+
+				genericDao
+				.openConnection();
+
+				var query = 'INSERT INTO Usuarios SET ?';
+
+				genericDao
+				.insertQuery(query, params)
+				.then(function(data){
+					callback(data);
+				}, function(err){
+					error(err);
+				});
+
+				genericDao
+				.endConnection();
+				
+			})
 		}
 	}
 

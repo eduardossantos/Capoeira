@@ -10,6 +10,7 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 })); 
 
 load('models')
+	.then('util')
 	.then('controllers')
 	.then('routes')
 	.into(app);

@@ -1,46 +1,22 @@
 module.exports = function(app)
 {
 	var promise = require('bluebird'),
-		message = require('../middlewares/message'),
-		genericDao = app.models.GenericDao;
+		genericDao = app.models.GenericDao,
+		table = 'Rodas';
 
-	var usuarioDao = {
-		findUserToLogin : function(params){
-			return new promise(function(callback, error){
-				var email = params.email;
-				var senha = params.senha;
-				
-				genericDao.openConnection();
-
-				var query = "SELECT * FROM Usuarios Where email ='"+email+"' AND senha='"+senha+"'";
-
-				genericDao
-				.execQuery(query)
-				.then(function(data){
-					if(data.length == 0){
-						error('não foi possível localizar o participante');
-					}
-					callback(data[0]);
-				});
-
-				genericDao.endConnection();
-			});
-		},
+	var rodasDao = {
 		findById : function(params){
 			return new promise(function(callback, error){
 				var id = params.id;
 				
 				genericDao.openConnection();
 
-				var query = "SELECT id, foto, descricao, apelido, nascimento, uf, email, sexo FROM Usuarios Where id ="+id;
+				var query = "SELECT * FROM "+table+" Where id ="+id;
 
 				genericDao
 				.execQuery(query)
 				.then(function(data){
-					if(data.length == 0){
-						error('não foi possível localizar o participante');
-					}
-					callback(data[0]);
+					callback(data);
 				}, function(err){
 					error(err);
 				});
@@ -52,14 +28,11 @@ module.exports = function(app)
 			return new promise(function(callback, error){			
 				genericDao.openConnection();
 
-				var query = "SELECT id, foto, descricao, apelido, nascimento, uf, email, sexo FROM Usuarios";
+				var query = "SELECT * FROM "+table;
 
 				genericDao
 				.execQuery(query)
 				.then(function(data){
-					if(data.length == 0){
-						error('não foi possível localizar o participante');
-					}
 					callback(data);
 				}, function(err){
 					error(err);
@@ -74,7 +47,7 @@ module.exports = function(app)
 
 				genericDao.openConnection();
 
-				var query = 'INSERT INTO Usuarios SET ?';
+				var query = "INSERT INTO "+table+" SET ?";
 
 				genericDao
 				.insertQuery(query, params)
@@ -91,12 +64,12 @@ module.exports = function(app)
 			return new promise(function(callback, error){
 				genericDao.openConnection();
 
-				var query = 'Update Usuarios SET ? Where id = ' + req.params.id;
+				var query = "Update "+table+" SET ? Where id = " + req.params.id;
 
 				genericDao
 				.updateQuery(query, req.body)
 				.then(function(data){
-					callback(data);
+					callback(data);	
 				}, function(err){
 					error(err);
 				});
@@ -106,5 +79,5 @@ module.exports = function(app)
 		}
 	}
 
-	return usuarioDao;
+	return rodasDao;
 }

@@ -12,7 +12,7 @@ module.exports = function(app)
 				
 				genericDao.openConnection();
 
-				var query = "SELECT * FROM Usuarios Where email ='"+email+"' AND senha='"+senha+"'";
+				var query = "SELECT id, foto, descricao, apelido, nascimento, uf, email, sexo FROM Usuarios Where email ='"+email+"' AND senha='"+senha+"'";
 
 				genericDao
 				.execQuery(query)

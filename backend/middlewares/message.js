@@ -1,10 +1,16 @@
-function message() {
-	this.status = 200;
-	this.mensagem = 'Ok';
+function message(req, res, next) {
+	this.res = res;
+	this.status = true;
+	this.statusResponse = 200;
+	this.mensagem = '';
 }
 
 message.prototype.setMensagem = function(mensagem){
 	this.mensagem = mensagem;
+}
+
+message.prototype.setStatusResponse = function(statusResponse){
+	this.statusResponse = statusResponse;
 }
 
 message.prototype.setStatus = function(status){
@@ -16,16 +22,11 @@ message.prototype.setData = function(data){
 }
 
 message.prototype.returnJson = function(){
-
-	var returnJson = {
-		status : this.status,
-		mensagem : this.mensagem,
-		data : this.data
-	};
-
-	return returnJson
+	this.res.status(this.statusResponse).json({status : this.status, mensagem : this.mensagem, data : this.data});
+	return;
 }
 
-module.exports = function(){
-	return new message();
+module.exports = function(req, res, next){
+	console.log(req.params.id);
+	//return new message(req, res, next);
 }

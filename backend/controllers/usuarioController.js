@@ -1,22 +1,9 @@
 module.exports = function(app){
 	var Promise = require('bluebird'),
-		usuarioDao = app.models.usuarioDao,
-		message = require('../middlewares/message');
+		usuarioDao = app.models.usuarioDao;
 
 	var usuarioController = {
 		findById : function(req,res){
-
-			//SetParams
-			if(!req.params || !req.query){
-
-				res.status(401).json({status : 'false', mensagem : 'Erro ao receber parametros.', data : {}});
-				return;
-			};
-
-			if(isNaN(req.params.id)){
-				res.status(401).json({status : 'false', mensagem : 'Não foi possível localizar o usuário', data : {}});
-				return;
-			}
 
 			usuarioDao.
 			findById(req.params).then(function(result){
@@ -26,6 +13,7 @@ module.exports = function(app){
 			    res.json({status : 'false', mensagem : err, data : {}})
 			  return;
 			});
+
 		},
 		findAll : function(req,res){
 
@@ -37,15 +25,9 @@ module.exports = function(app){
 			    res.json({status : 'false', mensagem : err, data : {}})
 			  return;
 			});
+
 		},
 		create : function(req,res){
-
-			//SetParams
-			if(!req.body){
-
-				message.returnJson(req, res, "Parametros não informados.");
-				return;
-			}
 
 			usuarioDao.
 			create(req.body).then(function(result){
@@ -59,16 +41,6 @@ module.exports = function(app){
 
 		},
 		edit : function(req,res){
-			//SetParams
-			if(!req.body || !req.params.id){
-				message.returnJson(req, res, "Parametros não informados.");
-				return;
-			}
-
-			if(isNaN(req.params.id)){
-				res.status(401).json({status : 'false', mensagem : 'Não foi possível localizar o usuário', data : {}});
-				return;
-			}
 
 			usuarioDao.
 			edit(req).then(function(result){

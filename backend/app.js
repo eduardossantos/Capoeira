@@ -9,8 +9,8 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
   extended: true
 })); 
 
-load('models')
-	.then('util')
+load('validator')
+	.then('models')
 	.then('controllers')
 	.then('routes')
 	.into(app);

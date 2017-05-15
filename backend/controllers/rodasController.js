@@ -17,7 +17,7 @@ module.exports = function(app){
 		findAll : function(req,res){
 
 			dao.
-			findAll().then(function(result){
+			findAll(req.query).then(function(result){
 				res.json({status : 'true', mensagem : '', data : result});
 			}, function (err) {
 			  console.error(err) // if readFile was unsuccessful, let's log it but still readAnotherFile

@@ -52,7 +52,12 @@ module.exports = function(app)
 			return new promise(function(callback, error){			
 				genericDao.openConnection();
 
+				var page = params.page;
+				var limit = params.limit ? params.limit : 10;
+				var offset = params.limit * (params.page - 1);
+
 				var query = "SELECT id, foto, descricao, apelido, nascimento, uf, email, sexo FROM Usuarios";
+				query += " LIMIT " + limit + " OFFSET " + offset;
 
 				genericDao
 				.execQuery(query)

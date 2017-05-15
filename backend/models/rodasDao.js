@@ -28,11 +28,19 @@ module.exports = function(app)
 			return new promise(function(callback, error){			
 				genericDao.openConnection();
 
-				var query = "SELECT * FROM "+table;
+				var page = params.page;
+				var limit = params.limit ? params.limit : 10;
+				var offset = params.limit * (params.page - 1);
+
+				var query = "SELECT * FROM "+table +" LIMIT " + limit + " OFFSET " + offset;
 
 				genericDao
 				.execQuery(query)
 				.then(function(data){
+					if(data.length == 0){
+						error('Nenhuma roda localizada.');
+					}
+
 					callback(data);
 				}, function(err){
 					error(err);

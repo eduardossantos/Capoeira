@@ -1,4 +1,4 @@
-exports.Date = function(date)
+exports.IsDate = function(date)
 {
 var bits = s.split('-');
 var y = bits[2],
@@ -13,4 +13,22 @@ if ((!(y % 4) && y % 100) || !(y % 400)) {
 daysInMonth[1] = 29;
 }
 return !(/\D/.test(String(d))) && d > 0 && d <= daysInMonth[--m]
+};
+
+exports.IsNumber = function(number){
+	if(isNaN(number)){
+		return false;
+	}
+
+	return true;
+};
+
+exports.IsValidEmail = function(email){
+	var regex = [a-zA-Z0-9_\.\+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-\.]+;
+	if(regex.test(email)){
+		return false;
+	}
+
+	return true;
 }
+

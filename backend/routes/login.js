@@ -1,7 +1,5 @@
 module.exports = function(app){
 	var login = app.controllers.login,
-		rodas = app.controllers.rodas,
-		usuario = app.controllers.usuario
 		validator = require('email-validator');
 
 	app.post('/login', function(req, res, next){

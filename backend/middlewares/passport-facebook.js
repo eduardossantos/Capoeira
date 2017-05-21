@@ -6,7 +6,7 @@ module.exports = function(){
 	var params = {
 		clientID: '1345212755559559',
 		clientSecret: '85a588bcd287c91eb81c6841f200d4d7',
-		callbackURL: "http://104.131.181.32/auth/facebook/callback",
+		callbackURL: "http://localhost:3000/auth/facebook/callback",
 		profileFields: [
 		'id',
 		'age_range',

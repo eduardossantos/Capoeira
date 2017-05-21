@@ -6,9 +6,11 @@
   "dependencies": {
     "bluebird": "^3.5.0",
     "body-parser": "^1.17.1",
+    "dateformat": "^2.0.0",
     "email-validator": "^1.0.7",
     "express": "^4.12.3",
     "express-load": "^1.1.15",
+    "https": "^1.0.0",
     "method-override": "^2.3.7",
     "nodemon": "^1.11.0",
     "passport": "^0.3.2",

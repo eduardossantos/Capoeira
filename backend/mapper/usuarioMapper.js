@@ -33,10 +33,6 @@ exports.rowModelUsuario= function(params){
 		usuarioEntity.setEmail(params.email);
 	}
 
-	if(params.senha){
-		usuarioEntity.setSenha(params.senha);
-	}
-
 	if(params.sexo){
 		usuarioEntity.setSexo(params.sexo);
 	}	

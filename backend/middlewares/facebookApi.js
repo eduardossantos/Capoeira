@@ -33,7 +33,7 @@ app.get('/login/facebook/return',
 		_this.saveUser(mapper).then(function(resultSaveUser){
 			 var params = { id : resultSaveUser.insertId}
 			_this.showUser(params).then(function(resultFindUser){
-				res.json(resultFindUser);
+				res.json({status : 'true', mensagem : '', loginResult : resultFindUser});
 			}, function(err){
 				res.send("Error " + err);
 				return;

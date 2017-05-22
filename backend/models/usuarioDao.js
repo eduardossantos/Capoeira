@@ -39,13 +39,13 @@ module.exports = function(app)
 				genericDao.endConnection();
 			});
 		},
-		findById : function(params){
+		findById : function(usuarioEntity){
 			return new promise(function(callback, error){
-				var id = params.id;
 				
 				genericDao.openConnection();
 
 				var colums = ['id', 'foto', 'descricao', 'apelido', 'nascimento', 'uf', 'email', 'sexo'];
+				var id = usuarioEntity.getId();
 
 				var query = 'SELECT ?? FROM ?? Where id = ?';
 				var arrayQuery = [colums,table,id];
@@ -83,6 +83,7 @@ module.exports = function(app)
 
 				var query = 'SELECT ?? FROM ?? LIMIT ? OFFSET ?';
 				var arrayQuery = [colums,table,limit,offset];
+				var userArray = [];
 
 				genericDao
 				.execQuery(query,arrayQuery)
@@ -90,7 +91,12 @@ module.exports = function(app)
 					if(data.length == 0){
 						error('não foi possível localizar o participante');
 					}
-					callback(data);
+
+					for (var i = 0, len = data.length; i < len; i++) {
+					  userArray.push(mapper.rowModelUsuario(data[i]));
+					}
+
+					callback(userArray);
 				}, function(err){
 					error(err);
 				});
@@ -147,13 +153,38 @@ module.exports = function(app)
 			return new promise(function(callback, error){
 				
 				//Validar parametros a serem atualizados
+				//Validar parametros a serem inseridos
+				if(usuarioEntity.getEmail() && !validator.Isemail(usuarioEntity.getEmail())){
+					error('Campo email está incorreto');
+				}
+
+				if(!usuarioEntity.getApelido()){
+					error('Campo apelido precisa ser preenchido');
+				}
+
+
+				if(usuarioEntity.getSenha() && usuarioEntity.getSenha().trim() < 6 ){
+					error('Campo senha exige ao menos 6 dígitos');
+				}
 
 				genericDao.openConnection();
+
+				var params = {
+					foto : usuarioEntity.getFoto(),
+					descricao : usuarioEntity.getDescricao(),
+					apelido : usuarioEntity.getApelido(),
+					nascimento : usuarioEntity.getNascimento(),
+					uf : usuarioEntity.getUF(),
+					email : usuarioEntity.getEmail(),
+					senha : usuarioEntity.getSenha(),
+					sexo : usuarioEntity.getSexo(),
+
+				};
 
 				var query = 'Update Usuarios SET ? Where id = ' + req.params.id;
 
 				genericDao
-				.updateQuery(query, req.body)
+				.updateQuery(query, params)
 				.then(function(data){
 					callback(data);
 				}, function(err){

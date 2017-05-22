@@ -1,12 +1,15 @@
 module.exports = function(app){
 	var Promise = require('bluebird'),
+		usuarioEntity = app.entity.usuarioEntity
 		usuarioDao = app.models.usuarioDao;
 
 	var usuarioController = {
 		findById : function(req,res){
 
+			usuarioEntity.setId(req.params.id);
+
 			usuarioDao.
-			findById(req.params).then(function(result){
+			findById(usuarioEntity).then(function(result){
 				res.json({status : 'true', mensagem : '', data : result});
 			}, function (err) {
 			  console.error(err) // if readFile was unsuccessful, let's log it but still readAnotherFile

@@ -27,6 +27,5 @@ message.prototype.returnJson = function(){
 }
 
 module.exports = function(req, res, next){
-	console.log(req.params.id);
-	//return new message(req, res, next);
+
 }

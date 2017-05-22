@@ -1,15 +1,17 @@
 module.exports = function(app)
 {
 	var promise = require('bluebird'),
-		message = require('../middlewares/message'),
-		genericDao = app.models.GenericDao;
+		validator = require('../middlewares/validator'),
+		genericDao = app.models.GenericDao,
+		mapper = app.mapper.usuarioMapper;
+		table = 'Usuarios';
 
 	var usuarioDao = {
 		findUserToLogin : function(usuarioEntity){
 			return new promise(function(callback, error){
 				
-				if(!usuarioEntity.getEmail()){
-					error('Campo email não informado');
+				if(!usuarioEntity.getEmail() || !validator.Isemail(usuarioEntity.getEmail())){
+					error('Campo email não informado ou está incorreto');
 				}
 
 				if(!usuarioEntity.getSenha()){
@@ -18,10 +20,15 @@ module.exports = function(app)
 				
 				genericDao.openConnection();
 
-				var query = "SELECT id, foto, descricao, apelido, nascimento, uf, email, sexo FROM Usuarios Where email ='"+usuarioEntity.getEmail()+"' AND senha='"+usuarioEntity.getSenha()+"'";
+				var colums = ['id', 'foto', 'descricao', 'apelido', 'nascimento', 'uf', 'email', 'sexo'];
+				var email = usuarioEntity.getEmail();
+				var senha = usuarioEntity.getSenha();
+
+				var query = 'SELECT ?? FROM ?? Where email = ? AND senha= ?';
+				var arrayQuery = [colums,table,email,senha];
 
 				genericDao
-				.execQuery(query)
+				.execQuery(query, arrayQuery)
 				.then(function(data){
 					if(data.length == 0){
 						error('não foi possível localizar o participante');
@@ -38,10 +45,13 @@ module.exports = function(app)
 				
 				genericDao.openConnection();
 
-				var query = "SELECT id, foto, descricao, apelido, nascimento, uf, email, sexo FROM Usuarios Where id ="+id;
+				var colums = ['id', 'foto', 'descricao', 'apelido', 'nascimento', 'uf', 'email', 'sexo'];
+
+				var query = 'SELECT ?? FROM ?? Where id = ?';
+				var arrayQuery = [colums,table,id];
 
 				genericDao
-				.execQuery(query)
+				.execQuery(query, arrayQuery)
 				.then(function(data){
 					if(data.length == 0){
 						error('não foi possível localizar o participante');
@@ -61,18 +71,20 @@ module.exports = function(app)
 				limit = params.limit ? params.limit : 10,
 				offset = limit * (page - 1);
 
-				if(isNaN(req.query.limit) || req.query.limit > 30){
+				if(isNaN(limit) || limit > 30){
 				error('Limite de páginas incorreto.');
 				return;
 				}
 
 				genericDao.openConnection();
 
-				var query = "SELECT id, foto, descricao, apelido, nascimento, uf, email, sexo FROM Usuarios";
-				query += " LIMIT " + limit + " OFFSET " + offset;
+				var colums = ['id', 'foto', 'descricao', 'apelido', 'nascimento', 'uf', 'email', 'sexo'];
+
+				var query = 'SELECT ?? FROM ?? LIMIT ? OFFSET ?';
+				var arrayQuery = [colums,table,limit,offset];
 
 				genericDao
-				.execQuery(query)
+				.execQuery(query,arrayQuery)
 				.then(function(data){
 					if(data.length == 0){
 						error('não foi possível localizar o participante');
@@ -86,10 +98,36 @@ module.exports = function(app)
 
 			});
 		},
-		create : function(params){
+		create : function(usuarioEntity){
 			return new promise(function(callback, error){
 
+				//Validar parametros a serem inseridos
+				if(usuarioEntity.getEmail() && !validator.Isemail(usuarioEntity.getEmail())){
+					error('Campo email está incorreto');
+				}
+
+				if(!usuarioEntity.getApelido()){
+					error('Campo apelido precisa ser preenchido');
+				}
+
+
+				if(usuarioEntity.getSenha() && usuarioEntity.getSenha().trim() < 6 ){
+					error('Campo senha exige ao menos 6 dígitos');
+				}
+
 				genericDao.openConnection();
+
+				var params = {
+					foto : usuarioEntity.getFoto(),
+					descricao : usuarioEntity.getDescricao(),
+					apelido : usuarioEntity.getApelido(),
+					nascimento : usuarioEntity.getNascimento(),
+					uf : usuarioEntity.getUF(),
+					email : usuarioEntity.getEmail(),
+					senha : usuarioEntity.getSenha(),
+					sexo : usuarioEntity.getSexo(),
+
+				};
 
 				var query = 'INSERT INTO Usuarios SET ?';
 
@@ -104,8 +142,11 @@ module.exports = function(app)
 				genericDao.endConnection();				
 			})
 		},
-		edit : function(req){
+		edit : function(usuarioEntity){
 			return new promise(function(callback, error){
+				
+				//Validar parametros a serem atualizados
+
 				genericDao.openConnection();
 
 				var query = 'Update Usuarios SET ? Where id = ' + req.params.id;

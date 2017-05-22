@@ -23,4 +23,21 @@ exports.IsNumber = function(number){
 	return true;
 };
 
+exports.Isemail = function(email){
+	const dns = require('dns');
+	var validator = require('email-validator')
+
+	var domain = email.substring(email.lastIndexOf("@") +1);
+
+	dns.lookup(domain, function(err, adress, family){
+		//console.log("Erro " + err + " Adress " + adress + " family " + family);
+		if(err) return false;
+	});
+
+	if(!validator.validate(email))
+			return false;
+		else 
+			return true;
+}
+
 

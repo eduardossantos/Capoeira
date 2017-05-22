@@ -84,6 +84,7 @@ return new promise(function(callback, error){
 	usuarioDAO.create(userData).then(function(result){
 		  callback(result);
 		},function (err) {
+		  //console.log(err);
 		  error(" Erro ao criar novo usuário");
 	});
 });

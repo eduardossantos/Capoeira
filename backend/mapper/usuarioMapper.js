@@ -83,16 +83,5 @@ exports.rowApiFacebook = function(params){
 			usuarioEntity.setSexo('F');
 	}	
 
-	var usuario = {
-		foto : usuarioEntity.getFoto(),
-		descricao : usuarioEntity.getDescricao(),
-		apelido : usuarioEntity.getApelido(),
-		nascimento : usuarioEntity.getNascimento(),
-		uf : usuarioEntity.getUF(),
-		email : usuarioEntity.getEmail(),
-		senha : usuarioEntity.getSenha(),
-		sexo : usuarioEntity.getSexo()
-	}
-
-	return usuario;
+	return usuarioEntity;
 };

@@ -15,9 +15,9 @@ module.exports = function(app)
 			});
 			connection.connect();
 		},
-		execQuery : function(query){
+		execQuery : function(query, array = null){
 			return new promise(function(callback, error){
-				connection.query(query, function(err, rows){
+				connection.query(query, array, function(err, rows){
 					if(err){
 						error(err.stack);
 						return;

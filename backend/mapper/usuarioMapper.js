@@ -31,11 +31,13 @@ exports.rowModelUsuario= function(params){
 
 	if(params.email){
 		usuarioEntity.setEmail(params.email);
-	}
+	} 
 
 	if(params.sexo){
 		usuarioEntity.setSexo(params.sexo);
 	}	
+
+	delete usuarioEntity.senha;
 
 	return usuarioEntity;
 };
@@ -80,5 +82,7 @@ exports.rowApiFacebook = function(params){
 			usuarioEntity.setSexo('F');
 	}	
 
+	delete usuarioEntity.senha;
+	
 	return usuarioEntity;
 };

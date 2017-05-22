@@ -31,8 +31,8 @@ app.get('/login/facebook/return',
 		var mapper = usuarioMapper.rowApiFacebook(JSON.parse(data));
 		
 		_this.saveUser(mapper).then(function(resultSaveUser){
-			 var params = { id : resultSaveUser.insertId}
-			_this.showUser(params).then(function(resultFindUser){
+			 mapper.setId(resultSaveUser.insertId);
+			_this.showUser(mapper).then(function(resultFindUser){
 				res.json({status : 'true', mensagem : '', loginResult : resultFindUser});
 			}, function(err){
 				res.send("Error " + err);

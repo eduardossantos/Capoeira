@@ -1,5 +1,5 @@
 function usuarios(){
-
+	this.id = null;
 	this.foto = null;
 	this.descricao = null;
 	this.apelido = null;
@@ -9,6 +9,10 @@ function usuarios(){
 	this.senha = null;
 	this.sexo = null;
 	this.facebookID = null;
+}
+
+usuarios.prototype.setId = function(id){
+	this.id = id;
 }
 
 usuarios.prototype.getId = function() {

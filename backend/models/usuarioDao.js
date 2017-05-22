@@ -5,14 +5,20 @@ module.exports = function(app)
 		genericDao = app.models.GenericDao;
 
 	var usuarioDao = {
-		findUserToLogin : function(params){
+		findUserToLogin : function(usuarioEntity){
 			return new promise(function(callback, error){
-				var email = params.email;
-				var senha = params.senha;
+				
+				if(!usuarioEntity.getEmail()){
+					error('Campo email não informado');
+				}
+
+				if(!usuarioEntity.getSenha()){
+					error('Campo senha não informado');
+				}
 				
 				genericDao.openConnection();
 
-				var query = "SELECT id, foto, descricao, apelido, nascimento, uf, email, sexo FROM Usuarios Where email ='"+email+"' AND senha='"+senha+"'";
+				var query = "SELECT id, foto, descricao, apelido, nascimento, uf, email, sexo FROM Usuarios Where email ='"+usuarioEntity.getEmail()+"' AND senha='"+usuarioEntity.getSenha()+"'";
 
 				genericDao
 				.execQuery(query)
@@ -50,11 +56,17 @@ module.exports = function(app)
 			});
 		}, findAll : function(params){
 			return new promise(function(callback, error){			
-				genericDao.openConnection();
+				
+				var page = params.page ? params.page : 1,
+				limit = params.limit ? params.limit : 10,
+				offset = limit * (page - 1);
 
-				var page = params.page;
-				var limit = params.limit ? params.limit : 10;
-				var offset = params.limit * (params.page - 1);
+				if(isNaN(req.query.limit) || req.query.limit > 30){
+				error('Limite de páginas incorreto.');
+				return;
+				}
+
+				genericDao.openConnection();
 
 				var query = "SELECT id, foto, descricao, apelido, nascimento, uf, email, sexo FROM Usuarios";
 				query += " LIMIT " + limit + " OFFSET " + offset;

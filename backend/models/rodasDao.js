@@ -28,9 +28,15 @@ module.exports = function(app)
 			return new promise(function(callback, error){			
 				genericDao.openConnection();
 
-				var page = params.page;
-				var limit = params.limit ? params.limit : 10;
-				var offset = params.limit * (params.page - 1);
+				var page = params.page ? params.page : 1,
+				limit = params.limit ? params.limit : 10,
+				offset = limit * (page - 1);
+
+				if(isNaN(req.query.limit) || req.query.limit > 30){
+				genericDao.endConnection();	
+				error('Limite de páginas incorreto.');
+				return;
+				}
 
 				var query = "SELECT * FROM "+table +" LIMIT " + limit + " OFFSET " + offset;
 

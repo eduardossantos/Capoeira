@@ -4,6 +4,10 @@ exports.rowModelUsuario= function(params){
 
 	var usuarioEntity = require('../entity/usuarioEntity');
 
+	if(params.id){
+		usuarioEntity.setId(params.id);
+	}
+
 	if(params.foto){
 		usuarioEntity.setFoto(params.foto);
 	}

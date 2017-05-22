@@ -5,19 +5,7 @@ module.exports = function(app){
 
 		//Rota que torna todos os usuários
 		app.get('/usuarios', function(req, res, next) {
-
-			if(isNaN(req.query.page)){
-			res.status(401).json({status : 'false', mensagem : 'Página não informada', data : {}});
-			return;
-			}
-
-			if(isNaN(req.query.limit) || req.query.limit > 30){
-			res.status(401).json({status : 'false', mensagem : 'Limite de páginas incorreto.', data : {}});
-			return;
-			}
-
-		controller.findAll(req, res, next);
-
+			controller.findAll(req, res, next);
 		});
 
 		//Rota para retorno dos dados de um usuário

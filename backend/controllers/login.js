@@ -1,13 +1,16 @@
 module.exports = function(app){
 	var Promise = require('bluebird'),
-		usuarioDao = app.models.usuarioDao,
-		message = require('../middlewares/message');
+		usuarioEntity = app.entity.usuarioEntity
+		usuarioDao = app.models.usuarioDao;
 
 	var loginController = {
 		entrar : function(req,res){
 			
+			usuarioEntity.setEmail(req.body.email);
+			usuarioEntity.setSenha(req.body.senha);
+
 			usuarioDao.
-			findUserToLogin(req.body).then(function(result){
+			findUserToLogin(usuarioEntity).then(function(result){
 				res.status(200).json({status : 'true', mensagem : '', 'loginResult' : result});
 			}, function (err) {
 			  console.error(err) // if readFile was unsuccessful, let's log it but still readAnotherFile

@@ -2,7 +2,8 @@ var _this = this;
 
 exports.rowModelUsuario= function(params){
 
-	var usuarioEntity = require('../entity/usuarioEntity');
+	var entity = require('../entity/usuarioEntity'), usuarioEntity = entity();
+	var dateFormat = require('dateformat');
 
 	if(params.id){
 		usuarioEntity.setId(params.id);
@@ -21,7 +22,7 @@ exports.rowModelUsuario= function(params){
 	}
 
 	if(params.nascimento){
-		usuarioEntity.setNascimento(params.nascimento);
+		usuarioEntity.setNascimento(dateFormat(params.nascimento, "yyyy-mm-dd"));
 	}
 
 	if(params.uf){
@@ -45,7 +46,7 @@ exports.rowModelUsuario= function(params){
 
 exports.rowApiFacebook = function(params){
 
-	var usuarioEntity = require('../entity/usuarioEntity');
+	var entity = require('../entity/usuarioEntity'), usuarioEntity = entity();
 	var dateFormat = require('dateformat');
 
 	if(params.id){

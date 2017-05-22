@@ -91,4 +91,6 @@ usuarios.prototype.getFacebookID = function(){
 	return this.facebookID;
 }
 
-module.exports = new usuarios;
+module.exports = function(){
+	return new usuarios();
+};

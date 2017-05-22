@@ -56,7 +56,8 @@ module.exports = function(app)
 					if(data.length == 0){
 						error('não foi possível localizar o participante');
 					}
-					callback(data[0]);
+					var user = mapper.rowModelUsuario(data[0]);
+					callback(user);
 				}, function(err){
 					error(err);
 				});

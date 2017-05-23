@@ -27,54 +27,11 @@ module.exports = function(app){
 
 		//Rota para criação do usuário
 		app.post('/usuarios', function(req, res, next){
-			//SetParams
-			if(!req.body){
-				message.returnJson(req, res, "Parametros não informados.");
-				return;
-			}
-
-			if(!req.body.apelido){
-				message.returnJson(req, res, "O apelido é obrigatório.");
-				return;
-			}
-
-			if(!req.body.email){
-				message.returnJson(req, res, "O email é obrigatório.");
-				return;
-			}
-
-			if(!req.body.senha){
-				message.returnJson(req, res, "A senha é obrigatória.");
-				return;
-			}
-
-			if(!req.body.dataNascimento || validator.Date(req.body.dataNascimento) == false){
-				message.returnJson(req, res, "A data de nascimento inválida ou não informada.");
-				return;
-			}
-
-			if(!req.body.sexo){
-				message.returnJson(req, res, "O sexo é obrigatório.");
-				return;
-			}
-
-
 			controller.create(req, res, next);
 		});
 
 		//Rota para edição do usuário
 		app.put('/usuarios/:id', function(req, res, next){
-			//SetParams
-			if(!req.body || !req.params.id){
-				message.returnJson(req, res, "Parametros não informados.");
-				return;
-			}
-
-			if(isNaN(req.params.id)){
-				res.status(401).json({status : 'false', mensagem : 'Não foi possível localizar o usuário', data : {}});
-				return;
-			}
-
 			controller.edit(req, res, next);
 		});
 };

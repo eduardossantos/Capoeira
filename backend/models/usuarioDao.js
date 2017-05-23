@@ -2,6 +2,7 @@ module.exports = function(app)
 {
 	var promise = require('bluebird'),
 		validator = require('../middlewares/validator'),
+		mail = require('../middlewares/mail')(),
 		genericDao = app.models.GenericDao,
 		mapper = app.mapper.usuarioMapper;
 		table = 'Usuarios';
@@ -34,6 +35,9 @@ module.exports = function(app)
 						error('não foi possível localizar o participante');
 					}
 					callback(data[0]);
+				}, function(err){
+					mail.setText(err);
+					mail.sendError();
 				});
 
 				genericDao.endConnection();
@@ -54,12 +58,14 @@ module.exports = function(app)
 				.execQuery(query, arrayQuery)
 				.then(function(data){
 					if(data.length == 0){
-						error('não foi possível localizar o participante');
+						error('não foi possível localizar o usuário');
 					}
 					var user = mapper.rowModelUsuario(data[0]);
 					callback(user);
 				}, function(err){
-					error(err);
+					mail.setText(err);
+					mail.sendError();
+					error('não foi possível localizar o usuário');
 				});
 
 				genericDao.endConnection();
@@ -89,7 +95,7 @@ module.exports = function(app)
 				.execQuery(query,arrayQuery)
 				.then(function(data){
 					if(data.length == 0){
-						error('não foi possível localizar o participante');
+						error('não foi possível localizar os usuários');
 					}
 
 					for (var i = 0, len = data.length; i < len; i++) {
@@ -98,15 +104,23 @@ module.exports = function(app)
 
 					callback(userArray);
 				}, function(err){
-					error(err);
+					mail.setText(err);
+					mail.sendError();
+					error('não foi possível localizar os usuários');
 				});
 
 				genericDao.endConnection();
 
 			});
 		},
-		create : function(usuarioEntity){
+		create : function(userData){
 			return new promise(function(callback, error){
+
+				if(!userData.body){
+					error('Erro ao receber parametros');
+				}
+
+				usuarioEntity = mapper.createModelUsuario(userData.body);
 
 				//Validar parametros a serem inseridos
 				if(usuarioEntity.getEmail() && !validator.Isemail(usuarioEntity.getEmail())){
@@ -124,74 +138,66 @@ module.exports = function(app)
 
 				genericDao.openConnection();
 
-				var params = {
-					foto : usuarioEntity.getFoto(),
-					descricao : usuarioEntity.getDescricao(),
-					apelido : usuarioEntity.getApelido(),
-					nascimento : usuarioEntity.getNascimento(),
-					uf : usuarioEntity.getUF(),
-					email : usuarioEntity.getEmail(),
-					senha : usuarioEntity.getSenha(),
-					sexo : usuarioEntity.getSexo(),
-
-				};
-
-				var query = 'INSERT INTO Usuarios SET ?';
+				var query = 'INSERT INTO ' + table + ' SET ?';
 
 				genericDao
-				.insertQuery(query, params)
+				.insertQuery(query, usuarioEntity)
 				.then(function(data){
 					callback(data);
 				}, function(err){
-					error(err);
+					mail.setText(err);
+					mail.sendError();
+					error('Não foi possível criar o usuário');
 				});
 
 				genericDao.endConnection();				
 			})
 		},
-		edit : function(usuarioEntity){
+		edit : function(userData){
 			return new promise(function(callback, error){
-				
-				//Validar parametros a serem atualizados
-				//Validar parametros a serem inseridos
-				if(usuarioEntity.getEmail() && !validator.Isemail(usuarioEntity.getEmail())){
-					error('Campo email está incorreto');
-				}
 
-				if(!usuarioEntity.getApelido()){
-					error('Campo apelido precisa ser preenchido');
-				}
+				usuarioEntity = mapper.rowModelUsuario(userData.params);
+
+				this.usuarioDao.findById(usuarioEntity).then(function(result){
+					usuarioEntity = mapper.editModelUsuario(result, userData.body);
+
+					//Validar parametros a serem inseridos
+					if(usuarioEntity.getEmail() && !validator.Isemail(usuarioEntity.getEmail())){
+						error('Campo email está incorreto');
+					}
+
+					if(!usuarioEntity.getApelido()){
+						error('Campo apelido precisa ser preenchido');
+					}
 
 
-				if(usuarioEntity.getSenha() && usuarioEntity.getSenha().trim() < 6 ){
-					error('Campo senha exige ao menos 6 dígitos');
-				}
+					if(usuarioEntity.getSenha() && usuarioEntity.getSenha().trim() < 6 ){
+						error('Campo senha exige ao menos 6 dígitos');
+					}
 
-				genericDao.openConnection();
+					genericDao.openConnection();
 
-				var params = {
-					foto : usuarioEntity.getFoto(),
-					descricao : usuarioEntity.getDescricao(),
-					apelido : usuarioEntity.getApelido(),
-					nascimento : usuarioEntity.getNascimento(),
-					uf : usuarioEntity.getUF(),
-					email : usuarioEntity.getEmail(),
-					senha : usuarioEntity.getSenha(),
-					sexo : usuarioEntity.getSexo(),
+					var query = 'Update ' + table + ' SET ? Where id = ' + usuarioEntity.getId();
 
-				};
+					genericDao
+					.updateQuery(query, usuarioEntity)
+					.then(function(data){
+						callback(data);
+					}, function(err){
+						mail.setText(err);
+						mail.sendError();
+						error('Não foi possível atualizar o usuário');
+					});
 
-				var query = 'Update Usuarios SET ? Where id = ' + req.params.id;
-
-				genericDao
-				.updateQuery(query, params)
-				.then(function(data){
-					callback(data);
-				}, function(err){
-					error(err);
+					genericDao.endConnection();
+					
+				}, function (err) {
+				  //console.error(err) // if readFile was unsuccessful, let's log it but still readAnotherFile
+				    error(err);
+				  return;
 				});
-
-				genericDao.endConnection();
+				
+				
 			})
 		}
 	}

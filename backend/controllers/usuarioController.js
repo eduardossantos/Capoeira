@@ -1,6 +1,6 @@
 module.exports = function(app){
 	var Promise = require('bluebird'),
-		usuarioEntity = app.entity.usuarioEntity
+		usuarioEntity = app.entity.usuarioEntity,
 		usuarioDao = app.models.usuarioDao;
 
 	var usuarioController = {
@@ -31,9 +31,8 @@ module.exports = function(app){
 
 		},
 		create : function(req,res){
-
 			usuarioDao.
-			create(req.body).then(function(result){
+			create(req).then(function(result){
 				if(result.affectedRows >= 1)
 				res.status(200).json({status : 'true', mensagem : 'Usuário criado com sucesso', data : {}});
 			}, function (err) {

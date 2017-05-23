@@ -12,6 +12,7 @@
     "express-load": "^1.1.15",
     "https": "^1.0.0",
     "method-override": "^2.3.7",
+    "nodemailer": "^4.0.1",
     "nodemon": "^1.11.0",
     "passport": "^0.3.2",
     "passport-facebook": "^2.1.1"

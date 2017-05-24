@@ -1,52 +1,98 @@
 var formidable = require('formidable'),
     http = require('http'),
-    util = require('util');
- 
-http.createServer(function(req, res) {
-  if (req.url == '/upload' && req.method.toLowerCase() == 'post') {
-    // parse a file upload 
-    var form = new formidable.IncomingForm();
-    form.encoding = 'utf-8';
-    form.maxFieldsSize = 2 * 1024 * 1024;
+    util = require('util'),
+    promise = require('bluebird'),
+    fs = require('fs');
 
-    form.parse(req, function(err, fields, files) {
-     
-    });
-    var array = [];
-    var count = 0;
+var _this = this;
 
-    form.on('progress', function(bytesReceived, bytesExpected) {
-        var percent_complete = (bytesReceived / bytesExpected) * 100;
-        console.log(percent_complete.toFixed(2));
-        console.log(count++);
-        array.push(percent_complete.toFixed(2))
-        res.end(json);
-    });
- 
-    form.on('error', function(err) {
-        //console.error(err);
-    });
- 
-    form.on('end', function(fields, files) {
-      //res.writeHead(200, {'content-type': 'text/plain'});
-      //res.write('received upload:\n\n');
-      var json = JSON.stringify({ 
-          anArray: array
+function Upload(){
+    _this.enconding = '';
+    _this.dir = 'C:/xampp/htdocs/TurbineNode/backend/img/';
+    _this.maxFieldsSize = 2 * 1024 * 1024;
+    _this.maxFields = 1000;
+    _this.keepExtensions = true;
+    _this.multiples = false;
+}
+
+
+Upload.prototype.setEncoding = function(enconding){
+    _this.enconding = enconding;
+}
+
+Upload.prototype.setDir = function(dir){
+    _this.dir = dir;
+}
+
+Upload.prototype.getDir = function(){
+    return _this.dir;
+}
+
+Upload.prototype.setMaxFieldsSize  = function(size){
+    _this.maxFieldsSize = maxFieldsSize;
+}
+
+Upload.prototype.setMaxFields  = function(fields){
+    _this.maxFields = maxFields;
+}
+
+Upload.prototype.setMultiples  = function(multiples){
+    _this.multiples = multiples
+}
+
+
+Upload.prototype.execute = function(req, diretorio){
+
+    return new promise((resolve, reject) => {
+
+        var form = new formidable.IncomingForm();
+
+        
+
+        if(_this.enconding){
+            form.enconding = this.enconding;
+        }
+
+        if(!_this.dir){
+            reject('Erro ao realizar o upload');
+        }
+
+        this.upload(req).then(function(result){
+            var img = _this.dir + result.name;
+            console.log(img);
+
+            if(!fs.existsSync(img)) {
+                fs.rename(result.path, img, function(err){
+                    if(err) reject(err);
+                    resolve("Upload realizado com sucesso");
+                });
+            }  else {
+                reject("Erro ao realizar upload da imagem");
+            }   
+
+        }, function(err){
+             if(err) reject(err);
         });
-        res.end(json);
+
     });
- 
- 
-    return;
-  }
- 
-  // show a file upload form 
-  res.writeHead(200, {'content-type': 'text/html'});
-  res.end(
-    '<form action="/upload" enctype="multipart/form-data" method="post">'+
-    '<input type="text" name="title"><br>'+
-    '<input type="file" name="upload" multiple="multiple"><br>'+
-    '<input type="submit" value="Upload">'+
-    '</form>'
-  );
-}).listen(3131);
+
+}
+
+Upload.prototype.upload = function(req){
+    return new promise((resolve, reject) => {
+
+        var form = new formidable.IncomingForm();
+
+        form.parse(req, function(err, fields, files){
+            if(err) reject(err);
+            resolve(files.fileToUpload);
+        });
+
+         form.on('error', function(err) {
+            reject(err);
+        });
+
+    });
+}
+
+module.exports = Upload;

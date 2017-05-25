@@ -5,6 +5,7 @@ error = require('./middlewares/error'),
 bodyParser = require('body-parser'),
 passport = require('passport'),
 passportFacebook = require('./middlewares/facebookApi');
+passportGoogle = require('./middlewares/googleApi');
 app = express();
 
 //Config passport-Facebook
@@ -35,6 +36,8 @@ load('validator')
 	.into(app);
 
 passportFacebook.enableFacebookPassport(app, passport);
+passportGoogle.enableGooglePassport(app, passport);
+
 
 app.use(error.notFound);
 app.use(error.serverError);

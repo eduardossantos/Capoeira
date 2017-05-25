@@ -6,6 +6,8 @@ exports.enableGooglePassport = function(app, passport)
 	Strategy = require('passport-google-oauth').OAuth2Strategy,
 	usuarioMapper = app.mapper.usuarioMapper,
 	usuarioDAO = app.models.usuarioDao;
+	var apiKey = 'vadiando-168718 ';
+
 
 passport.use ( new Strategy({
 	clientID : config.GOOGLE_ID,
@@ -23,27 +25,26 @@ passport.use ( new Strategy({
 	})
 );
 
-app.get('/login/google', passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/plus.login'] }));
+app.get('/login/google', passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/plus.login','email','openid'] }));
 app.get('/login/google/return', 
 	passport.authenticate('google', {failureRedirect: '/login'}),
 	function(req, res) {
-	_this.getUserData(req.user.accessToken, function(data){
-		var mapper = usuarioMapper.rowApiFacebook(JSON.parse(data));
-		
-		_this.saveUser(mapper).then(function(resultSaveUser){
-			 mapper.setId(resultSaveUser.insertId);
-			_this.showUser(mapper).then(function(resultFindUser){
-				res.json({status : 'true', mensagem : '', loginResult : resultFindUser});
-			}, function(err){
-				res.send("Error " + err);
-				return;
-			})
-		}, function(err){
-			res.send("Error " + err);
-			return;
-		})
-		
-		
+		console.log(req.user.profile);
+	 _this.getUserData(req.user.accessToken, function(data){
+	 	res.json(JSON.parse(data));
+	// 	var mapper = usuarioMapper.rowApiFacebook(JSON.parse(data));
+	// 	_this.saveUser(mapper).then(function(resultSaveUser){
+	// 		 mapper.setId(resultSaveUser.insertId);
+	// 		_this.showUser(mapper).then(function(resultFindUser){
+	// 			res.json({status : 'true', mensagem : '', loginResult : resultFindUser});
+	// 		}, function(err){
+	// 			res.send("Error " + err);
+	// 			return;
+	// 		})
+	// 	}, function(err){
+	// 		res.send("Error " + err);
+	// 		return;
+	// 	})
 	})
 	}
 );
@@ -52,16 +53,8 @@ app.get('/login/google/return',
 exports.getUserData = function(accessToken, callback) {
 
 	var https = require('https');
-
-    var options = {
-        host: 'graph.facebook.com',
-        port: 443,
-        path: '/v2.9/me?fields=id,name,email,gender,locale,birthday,installed,picture,friends,friendlists,events&access_token=' + accessToken, //apiPath example: '/me/friends'
-        method: 'GET'
-    };
-
     var buffer = ''; //this buffer will be populated with the chunks of the data received from facebook
-    var request = https.get(options, function(result){
+    var request = https.get('https://www.googleapis.com/plus/v1/people/me?access_token=' + accessToken, function(result){
         result.setEncoding('utf8');
         result.on('data', function(chunk){
             buffer += chunk;
@@ -73,7 +66,7 @@ exports.getUserData = function(accessToken, callback) {
     });
 
     request.on('error', function(e){
-        console.log('error from facebook.getFbData: ' + e.message)
+        console.log('error from Google api: ' + e.message)
     });
 
     request.end();

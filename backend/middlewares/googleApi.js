@@ -31,7 +31,7 @@ app.get('/login/google/return',
 	function(req, res) {
 		console.log(req.user.profile);
 	 _this.getUserData(req.user.accessToken, function(data){
-	 	res.json(JSON.parse(data));
+	 	res.json(data);
 	// 	var mapper = usuarioMapper.rowApiFacebook(JSON.parse(data));
 	// 	_this.saveUser(mapper).then(function(resultSaveUser){
 	// 		 mapper.setId(resultSaveUser.insertId);

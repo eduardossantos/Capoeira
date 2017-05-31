@@ -69,7 +69,9 @@ Mail.prototype.send = function(){
 
 Mail.prototype.sendError = function(){
 
-	this.to = 'luizsantos1992@gmail.com, eduardo120983@gmail.com';
+	console.log('aqui');
+
+	this.to = 'luizsantos1992@gmail.com';
 	this.subject = 'Erro na aplicação Vadiando';
 
 	var transporter = nodemailer.createTransport({
@@ -87,8 +89,6 @@ Mail.prototype.sendError = function(){
     	}
 	});
 
-	console.log(this.service);
-
 	let mailOptions = {
 	  from: this.from,
 	  to: this.to, // More than one = 'myfriend@yahoo.com, myotherfriend@yahoo.com'
@@ -98,7 +98,7 @@ Mail.prototype.sendError = function(){
 
 	transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
-        return console.log(error);
+        return console.log("Error " + error);
     }
     console.log('Message %s sent: %s', info.messageId, info.response);
 	});

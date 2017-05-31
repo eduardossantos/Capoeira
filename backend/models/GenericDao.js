@@ -1,60 +1,37 @@
-module.exports = function(app)
-{
-	var promise = require('bluebird'),
-		message = require('../middlewares/message'),
-		mysql   = require('mysql'),
-		connection = null;
+var config = require('../config/config');
+var mysql      = require('mysql');
 
-	var GenericDao = {
-		openConnection : function(){
-			connection = mysql.createConnection({
-			  host     : '104.131.181.32',
-			  user     : 'root',
-			  password : 'novaera2017',
-			  database : 'Capoeira'
-			});
-			connection.connect();
-		},
-		execQuery : function(query, array = null){
-			return new promise(function(callback, error){
-				connection.query(query, array, function(err, rows){
-					if(err){
-						error(err.stack);
-						return;
-					}
-					callback(rows);
-				});
-			});
-		},
-		insertQuery : function(query, params){
-			return new promise(function(callback, error){
-				var consulta = connection.query(query, params, function(err, rows){
-					if(err){
-						console.log(err);
-						error(err.stack);
-						return;
-					}
-					callback(rows);
-				})
-				//console.log(consulta.sql);
-			})
-		},
-		updateQuery : function(query, params){
-			return new promise(function(callback, error){
-				var consulta = connection.query(query, params, function(err, rows){
-					if(err){
-						error(err.stack);
-						return;
-					}
-					callback(rows);
-				})
-				//console.log(consulta.sql);
-			})
-		},
-		endConnection : function(){
-			connection.end();
-		}
-	}
-
-	return GenericDao;
+function GenericDAO(){
+	var connection = null;
 }
+
+GenericDAO.prototype.openConnection = function() {
+	
+	connection = mysql.createConnection({
+			  host     : config.HOST,
+			  user     : config.USER,
+			  password : config.PASSWORD,
+			  database : config.DATABASE
+			});
+	
+	connection.connect();
+
+};
+
+GenericDAO.prototype.execQuery = function(query, array, callback) {
+	connection.query(query, array, callback);
+};
+
+GenericDAO.prototype.insertQuery = function(query, object, callback){
+	connection.query(query, object, callback);
+}
+
+GenericDAO.prototype.updateQuery = function(query, object, callback){
+	connection.query(query, object, callback);
+}
+
+GenericDAO.prototype.endConnection = function() {
+	connection.end();
+};
+
+module.exports = new GenericDAO();

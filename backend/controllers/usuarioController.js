@@ -20,8 +20,13 @@ module.exports = function(app){
 		},
 		findAll : function(req,res){
 
+			console.log(req.query);
+
+			usuarioDao.setPage(req.query.page);
+			usuarioDao.setLimit(req.query.limit);
+
 			usuarioDao.
-			findAll(req.query).then(function(result){
+			findAll().then(function(result){
 				res.json({status : 'true', mensagem : '', data : result});
 			}, function (err) {
 			  console.error(err) // if readFile was unsuccessful, let's log it but still readAnotherFile
@@ -31,6 +36,9 @@ module.exports = function(app){
 
 		},
 		create : function(req,res){
+
+			usuarioEntity
+
 			usuarioDao.
 			create(req).then(function(result){
 				if(result.affectedRows >= 1)

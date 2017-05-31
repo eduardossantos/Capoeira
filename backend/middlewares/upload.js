@@ -47,8 +47,6 @@ Upload.prototype.execute = function(req, diretorio){
 
         var form = new formidable.IncomingForm();
 
-        
-
         if(_this.enconding){
             form.enconding = this.enconding;
         }
@@ -59,7 +57,6 @@ Upload.prototype.execute = function(req, diretorio){
 
         this.upload(req).then(function(result){
             var img = _this.dir + result.name;
-            console.log(img);
 
             if(!fs.existsSync(img)) {
                 fs.rename(result.path, img, function(err){

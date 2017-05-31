@@ -1,206 +1,107 @@
-module.exports = function(app)
-{
-	var promise = require('bluebird'),
-		validator = require('../middlewares/validator'),
-		mail = require('../middlewares/mail')(),
-		genericDao = app.models.GenericDao,
-		mapper = app.mapper.usuarioMapper;
-		table = 'Usuarios';
+var promise = require('bluebird'),
+validator = require('../middlewares/validator'),
+mail = require('../middlewares/mail')(),
+genericDao = promise.promisifyAll(app.models.GenericDao),
+mapper = app.mapper.usuarioMapper;
+table = 'Usuarios';
 
-	var usuarioDao = {
-		findUserToLogin : function(usuarioEntity){
-			return new promise(function(callback, error){
-				
-				if(!usuarioEntity.getEmail() || !validator.Isemail(usuarioEntity.getEmail())){
-					error('Campo email não informado ou está incorreto');
-				}
+function UsuarioDAO(){
+	this.table = 'Usuarios';
+	this.limit = null;
+	this.page = null;
 
-				if(!usuarioEntity.getSenha()){
-					error('Campo senha não informado');
-				}
-				
-				genericDao.openConnection();
+}
 
-				var colums = ['id', 'foto', 'descricao', 'apelido', 'nascimento', 'uf', 'email', 'sexo'];
-				var email = usuarioEntity.getEmail();
-				var senha = usuarioEntity.getSenha();
+UsuarioDAO.prototype.setLimit = function(limit){
+	this.limit = parseInt(limit);
+}
 
-				var query = 'SELECT ?? FROM ?? Where email = ? AND senha= ?';
-				var arrayQuery = [colums,table,email,senha];
+UsuarioDAO.prototype.getLimit = function(){
+	return this.limit;	
+}
 
-				genericDao
-				.execQuery(query, arrayQuery)
-				.then(function(data){
-					if(data.length == 0){
-						error('não foi possível localizar o participante');
-					}
-					callback(data[0]);
-				}, function(err){
-					mail.setText(err);
-					mail.sendError();
-				});
+UsuarioDAO.prototype.setPage = function(page){
+	this.page = parseInt(page);
+}
 
-				genericDao.endConnection();
-			});
-		},
-		findById : function(usuarioEntity){
-			return new promise(function(callback, error){
-				
-				genericDao.openConnection();
+UsuarioDAO.prototype.getPage = function(){
+	return this.page;
+}
 
-				var colums = ['id', 'foto', 'descricao', 'apelido', 'nascimento', 'uf', 'email', 'sexo'];
-				var id = usuarioEntity.getId();
+UsuarioDAO.prototype.findByParam = function(first_argument) {
+	// body...
+};
 
-				var query = 'SELECT ?? FROM ?? Where id = ?';
-				var arrayQuery = [colums,table,id];
+UsuarioDAO.prototype.findById = function(usuarioEntity){
+	return new promise((resolve, reject) =>{
 
-				genericDao
-				.execQuery(query, arrayQuery)
-				.then(function(data){
-					if(data.length == 0){
-						error('não foi possível localizar o usuário');
-					}
-					var user = mapper.rowModelUsuario(data[0]);
-					callback(user);
-				}, function(err){
-					mail.setText(err);
-					mail.sendError();
-					error('não foi possível localizar o usuário');
-				});
+		genericDao.openConnection();
 
-				genericDao.endConnection();
+		var id = usuarioEntity.getId();
 
-			});
-		}, findAll : function(params){
-			return new promise(function(callback, error){			
-				
-				var page = params.page ? params.page : 1,
-				limit = params.limit ? params.limit : 10,
-				offset = limit * (page - 1);
+		var query = 'SELECT * FROM ?? Where id = ?';
+		var arrayQuery = [this.table,id];
 
-				if(isNaN(limit) || limit > 30){
-				error('Limite de páginas incorreto.');
-				return;
-				}
-
-				genericDao.openConnection();
-
-				var colums = ['id', 'foto', 'descricao', 'apelido', 'nascimento', 'uf', 'email', 'sexo'];
-
-				var query = 'SELECT ?? FROM ?? LIMIT ? OFFSET ?';
-				var arrayQuery = [colums,table,limit,offset];
-				var userArray = [];
-
-				genericDao
-				.execQuery(query,arrayQuery)
-				.then(function(data){
-					if(data.length == 0){
-						error('não foi possível localizar os usuários');
-					}
-
-					for (var i = 0, len = data.length; i < len; i++) {
-					  userArray.push(mapper.rowModelUsuario(data[i]));
-					}
-
-					callback(userArray);
-				}, function(err){
-					mail.setText(err);
-					mail.sendError();
-					error('não foi possível localizar os usuários');
-				});
-
-				genericDao.endConnection();
-
-			});
-		},
-		create : function(userData){
-			return new promise(function(callback, error){
-
-				if(!userData.body){
-					error('Erro ao receber parametros');
-				}
-
-				usuarioEntity = mapper.createModelUsuario(userData.body);
-
-				//Validar parametros a serem inseridos
-				if(usuarioEntity.getEmail() && !validator.Isemail(usuarioEntity.getEmail())){
-					error('Campo email está incorreto');
-				}
-
-				if(!usuarioEntity.getApelido()){
-					error('Campo apelido precisa ser preenchido');
-				}
-
-
-				if(usuarioEntity.getSenha() && usuarioEntity.getSenha().trim() < 6 ){
-					error('Campo senha exige ao menos 6 dígitos');
-				}
-
-				genericDao.openConnection();
-
-				var query = 'INSERT INTO ' + table + ' SET ?';
-
-				genericDao
-				.insertQuery(query, usuarioEntity)
-				.then(function(data){
-					callback(data);
-				}, function(err){
-					mail.setText(err);
-					mail.sendError();
-					error('Não foi possível criar o usuário');
-				});
-
-				genericDao.endConnection();				
-			})
-		},
-		edit : function(userData){
-			return new promise(function(callback, error){
-
-				usuarioEntity = mapper.rowModelUsuario(userData.params);
-
-				this.usuarioDao.findById(usuarioEntity).then(function(result){
-					usuarioEntity = mapper.editModelUsuario(result, userData.body);
-
-					//Validar parametros a serem inseridos
-					if(usuarioEntity.getEmail() && !validator.Isemail(usuarioEntity.getEmail())){
-						error('Campo email está incorreto');
-					}
-
-					if(!usuarioEntity.getApelido()){
-						error('Campo apelido precisa ser preenchido');
-					}
-
-
-					if(usuarioEntity.getSenha() && usuarioEntity.getSenha().trim() < 6 ){
-						error('Campo senha exige ao menos 6 dígitos');
-					}
-
-					genericDao.openConnection();
-
-					var query = 'Update ' + table + ' SET ? Where id = ' + usuarioEntity.getId();
-
-					genericDao
-					.updateQuery(query, usuarioEntity)
-					.then(function(data){
-						callback(data);
-					}, function(err){
-						mail.setText(err);
-						mail.sendError();
-						error('Não foi possível atualizar o usuário');
-					});
-
-					genericDao.endConnection();
-					
-				}, function (err) {
-				  //console.error(err) // if readFile was unsuccessful, let's log it but still readAnotherFile
-				    error(err);
-				  return;
-				});
-				
-				
-			})
+		genericDao
+		.execQueryAsync(query, arrayQuery)
+		.then(function(data){
+		if(data.length == 0){
+		reject('Não foi possível localizar o usuário');
 		}
+		var user = mapper.rowModelUsuario(data[0]);
+		resolve(user);
+		}, function(err){
+		mail.setText(err);
+		mail.sendError();
+		reject('Não foi possível localizar o usuário');
+		});
+
+		genericDao.endConnection();
+	});
+}
+
+UsuarioDAO.prototype.findAll = function(){
+	
+	return new promise((resolve, reject) =>{
+
+	var page = this.getPage() ? this.getPage() : 1,
+	limit = this.getLimit() ? this.getLimit() : 10,
+	offset = limit * (page - 1);
+
+	if(isNaN(limit) || limit > 30){
+	reject('Limite de páginas incorreto.');
+	return;
 	}
 
-	return usuarioDao;
-}
+	genericDao.openConnection();
+
+	var colums = ['id', 'foto', 'descricao', 'apelido', 'nascimento', 'uf', 'email', 'sexo'];
+
+	var query = 'SELECT ?? FROM ?? ORDER BY id DESC LIMIT ? OFFSET ?';
+	var arrayQuery = [colums,this.table,limit,offset];
+	var userArray = []; 
+
+	genericDao
+	.execQueryAsync(query,arrayQuery)
+	.then(function(data){
+		resolve(data);
+	}, function(err){
+		mail.setText(err.stack);
+		mail.sendError();
+		reject('não foi possível localizar os usuários');
+	});
+
+	genericDao.endConnection();
+
+	})
+};
+
+UsuarioDAO.prototype.create = function(first_argument) {
+	// body...
+};
+
+UsuarioDAO.prototype.update = function(first_argument) {
+	// body...
+};
+
+module.exports = new UsuarioDAO();

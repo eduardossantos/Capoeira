@@ -10,12 +10,12 @@ module.exports = {
 
 	SERVICE_HOST : 'smtp.gmail.com',
 	SERVICE_USER : 'luizsantos1992@gmail.com',
-	SERVICE_PASSOWORD : 'hostnet100',
+	SERVICE_PASSOWORD : '-',
 	SERVICE_FROM : 'luizsantos1992@gmail.com',
 
 	HOST     : '104.131.181.32',
     USER     : 'root',
-    PASSWORD : 'novaera2017',
+    PASSWORD : '-',
     DATABASE : 'Capoeira'
 
 }
